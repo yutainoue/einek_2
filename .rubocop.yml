@@ -1,0 +1,15 @@
+# 日本語コメントを許可する
+AsciiComments:
+  Enabled: false
+
+# ドキュメントコメントのないクラス定義を許可する
+Style/Documentation:
+  Enabled: false
+
+# 一行は50文字まで
+Metrics/BlockLength:
+  Max: 50
+
+# 改行するブロックで{}を使っても良い
+Style/BlockDelimiters:
+  Enabled: false
