@@ -2,6 +2,7 @@ class CreateConcertInfos < ActiveRecord::Migration[5.1]
   def change
     create_table :concert_infos do |t|
       t.string :concert_name
+      t.string :performer_name
       t.string :hall
       t.date   :tact_down_time
       t.date   :opening_time

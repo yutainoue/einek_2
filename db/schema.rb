@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 20171103040345) do
 
   create_table "concert_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "concert_name"
+    t.string "performer_name"
     t.string "hall"
     t.date "tact_down_time"
     t.date "opening_time"
