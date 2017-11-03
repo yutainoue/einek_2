@@ -1,0 +1,2 @@
+class ConcertInfo < ApplicationRecord
+end
