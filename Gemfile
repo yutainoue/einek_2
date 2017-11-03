@@ -6,6 +6,8 @@ git_source(:github) do |repo_name|
 end
 
 gem 'coffee-rails', '~> 4.2'
+gem 'erb2haml'
+gem 'haml-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'mysql2'
 gem 'puma', '~> 3.7'
