@@ -1,0 +1,32 @@
+%h1 index
+%table
+  %tr
+    %th 演奏会名
+    %th 楽団名
+    %th ホール名
+    %th 開演日時
+    %th 開場日時
+    %th 指揮者
+    %th 曲目
+    %th 連絡先
+    %th URL
+  - @concert_infos.each do |concert|
+    %tr
+      %td
+        = concert.concert_name
+      %td
+        = concert.performer_name
+      %td
+        = concert.hall
+      %td
+        = concert.tact_down_time
+      %td
+        = concert.opening_time
+      %td
+        = concert.conductor
+      %td
+        = concert.music_titles
+      %td
+        = concert.contact_information
+      %td
+        = concert.url
