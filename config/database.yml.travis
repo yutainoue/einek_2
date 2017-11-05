@@ -1,19 +1,8 @@
-default: &default
+test:
   adapter: mysql2
-  encoding: utf8
-  pool: 5
+  database: database
+  host: 127.0.0.1
   username: root
   password:
-  socket: /tmp/mysql.sock
-
-development:
-  <<: *default
-  database: einek_dev
-
-test:
-  <<: *default
-  database: einek_test
-
-production:
-  <<: *default
-  database: einek_production
+  encoding: utf8
+  pool: 5
