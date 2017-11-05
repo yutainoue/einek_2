@@ -5,7 +5,7 @@ rvm:
 bundler_args:
   --jobs=2
 script:
-#  - bundle exec rake db:setup
-#  - bundle exec rake spec
+ - bundle exec rake db:setup
+ - bundle exec rake spec
 cache:
   bundler
