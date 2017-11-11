@@ -22,14 +22,14 @@ class Scraping
 
   def parth_concert_info(page, url)
     {
-      concert:       page.search('.concertName').text,
-      performer:     page.search('.txt').text.gsub(/(のコンサート|楽団・演奏家)/, ''),
-      hall:          page.search('.placeinfo').text,
-      opening_time:  exclusion_escape_character(page.search('.concertDate').text),
-      conductor:     page.search('.conductorName').text,
-      music_titles:  exclusion_escape_character(page.search('p.composer').text),
-      contact:       parth_contact(page),
-      performer_url: parth_performer_url(page),
+      concert:       page.search('.concertName').text.presence || '未記入',
+      performer:     page.search('.txt').text.gsub(/(のコンサート|楽団・演奏家)/, '').presence || '未記入',
+      hall:          page.search('.placeinfo').text.presence || '未記入',
+      opening_time:  exclusion_escape_character(page.search('.concertDate').text).presence || '未記入',
+      conductor:     page.search('.conductorName').text.presence || '未記入',
+      music_titles:  exclusion_escape_character(page.search('p.composer').text).presence || '未記入',
+      contact:       parth_contact(page).presence || '未記入',
+      performer_url: parth_performer_url(page).presence || '未記入',
       page_url:      url
     }
   end
