@@ -4,8 +4,6 @@ class ConcertInfosController < ApplicationController
   end
 
   def new
-    # ConcertInfo作成クラスを作って、そっちでスクレイピング・保存する
-    # ConcertInfoモデルはイニシャライズするだけ
     Scraping.new.concert_info
     redirect_to root_path
   end
