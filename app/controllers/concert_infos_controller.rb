@@ -4,10 +4,9 @@ class ConcertInfosController < ApplicationController
   end
 
   def new
-    agent        = Mechanize.new
-    page         = agent.get('http://okesen.snacle.jp/gakudan/kouendtl/eid/34166')
-    concert_name = page.search('.concertName').text
-    binding.pry
+    # ConcertInfo作成クラスを作って、そっちでスクレイピング・保存する
+    # ConcertInfoモデルはイニシャライズするだけ
+    Scraping.new.concert_info
     redirect_to root_path
   end
 end
