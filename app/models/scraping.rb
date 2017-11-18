@@ -5,13 +5,16 @@ class Scraping
   def concert_info
     session       = capybara_init
     urls          = concert_info_urls(session)
-    # dummy_urls = [urls[0], urls[1], urls[2], urls[3], urls[4]]
+    dummy_urls = [urls[0], urls[1], urls[2], urls[3], urls[4]]
     concert_infos = []
 
-    urls.each do |url|
+    dummy_urls.each do |url|
       begin
         page = html_parth(url, session)
-        concert_infos << ConcertInfo.new(parth_concert_info(page, url))
+        concert_info = ConcertInfo.new(parth_concert_info(page, url))
+        if concert_info.performer_url.presence
+          concert_infos << concert_info
+        end
       rescue => e
         puts "#{e}：#{url}"
       end
@@ -56,7 +59,7 @@ class Scraping
       conductor:     page.search('.conductorName').text.presence || '未記入',
       music_titles:  exclusion_escape_character(page.search('p.composer').text).presence || '未記入',
       contact:       slice_text(page, '連絡先：', 'URL：').presence || '未記入',
-      performer_url: slice_text(page, 'URL：', '直接お問合せする際は').presence || '未記入',
+      performer_url: slice_text(page, 'URL：', '直接お問合せする際は'),
       page_url:      url
     }
   end
