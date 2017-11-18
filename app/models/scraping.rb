@@ -20,8 +20,16 @@ class Scraping
       end
     end
 
-    ConcertInfo.delete_all
-    ConcertInfo.import(concert_infos)
+    begin
+      ConcertInfo.transaction do
+        ConcertInfo.all.each do |concert_info|
+          concert_info.destroy!
+        end
+        ConcertInfo.import(concert_infos)
+      end
+    rescue => e
+      p "コンサート情報の更新に失敗しました：#{e}"
+    end
   end
 
   private
