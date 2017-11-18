@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20171103040345) do
     t.string "opening_time"
     t.string "conductor"
     t.text "music_titles"
-    t.string "contact"
     t.string "performer_url"
     t.string "page_url"
     t.datetime "created_at", null: false

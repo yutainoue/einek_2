@@ -8,7 +8,6 @@
     music_titles:   "ほにゃらら作曲 交響曲#{no}1番<br>
                      ほにゃらら作曲 交響曲#{no}2番<br>
                      ほにゃらら作曲 交響曲#{no}3番",
-    contact:        "einek#{no}@example.com",
     performer_url:  "http://concert-#{no}",
     page_url:       "http://hoge-#{no}"
   )

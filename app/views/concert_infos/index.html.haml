@@ -8,7 +8,6 @@
     %th 開演日時
     %th 指揮者
     %th 曲目
-    %th 連絡先
     %th URL
   - @concert_infos.each do |concert|
     %tr
@@ -24,7 +23,5 @@
         = concert.conductor
       %td
         = concert.music_titles
-      %td
-        = concert.contact
       %td
         = link_to(concert.performer_url, concert.performer_url, target: '_blank')

@@ -66,7 +66,6 @@ class Scraping
       opening_time:  exclusion_escape_character(page.search('.concertDate').text).presence || '未記入',
       conductor:     page.search('.conductorName').text.presence || '未記入',
       music_titles:  exclusion_escape_character(page.search('p.composer').text).presence || '未記入',
-      contact:       slice_text(page, '連絡先：', 'URL：').presence || '未記入',
       performer_url: slice_text(page, 'URL：', '直接お問合せする際は'),
       page_url:      url
     }

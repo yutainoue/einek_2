@@ -7,7 +7,6 @@ class CreateConcertInfos < ActiveRecord::Migration[5.1]
       t.string :opening_time
       t.string :conductor
       t.text   :music_titles
-      t.string :contact
       t.string :performer_url
       t.string :page_url
 
