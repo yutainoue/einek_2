@@ -1,4 +1,6 @@
 class Scraping
+  require 'log_output'
+  include LogOutput
   require 'capybara'
   require 'capybara/poltergeist'
 
@@ -12,23 +14,19 @@ class Scraping
       begin
         page = html_parth(url, session)
         concert_info = ConcertInfo.new(parth_concert_info(page, url))
-        if concert_info.performer_url.presence
-          concert_infos << concert_info
-        end
+        concert_infos << concert_info if concert_info.performer_url.presence
       rescue => e
-        puts "#{e}：#{url}"
+        log_warn('コンサート情報ページのスクレイピングに失敗しました', e)
       end
     end
 
     begin
       ConcertInfo.transaction do
-        ConcertInfo.all.each do |concert_info|
-          concert_info.destroy!
-        end
+        ConcertInfo.all.each(&:destroy!)
         ConcertInfo.import(concert_infos)
       end
     rescue => e
-      p "コンサート情報の更新に失敗しました：#{e}"
+      log_error('コンサート情報の更新に失敗しました', e)
     end
   end
 
@@ -38,7 +36,7 @@ class Scraping
     # Capybaraのオプション調べる
     Capybara.run_server = false
     Capybara.register_driver :poltergeist do |app|
-      Capybara::Poltergeist::Driver.new(app, :js_errors => false, :timeout => 60)
+      Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 60)
     end
     Capybara::Session.new(:poltergeist)
   end
@@ -46,7 +44,7 @@ class Scraping
   def concert_info_urls(session)
     concert_info_urls = []
     urls = ["http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}"]
-            # "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
+    # "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
 
     urls.each do |url|
       page = html_parth(url, session)

@@ -11,6 +11,13 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
   config.action_mailer.perform_caching = false
   config.action_mailer.delivery_method = :test
-  config.active_support.deprecation = :stderr
+
+  # ログのカラー出力をやめる
   config.colorize_logging = false
+
+  # ログフォーマット
+  config.log_formatter = ::Logger::Formatter.new
+
+  # 出力するログレベル
+  config.log_level = :debug
 end

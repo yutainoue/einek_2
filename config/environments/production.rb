@@ -19,5 +19,13 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
   config.active_record.dump_schema_after_migration = false
+
+  # ログのカラー出力をやめる
   config.colorize_logging = false
+
+  # ログフォーマット
+  config.log_formatter = ::Logger::Formatter.new
+
+  # 出力するログレベル
+  config.log_level = :debug
 end

@@ -22,5 +22,13 @@ Rails.application.configure do
   config.assets.debug = true
   config.assets.quiet = true
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # ログのカラー出力をやめる
   config.colorize_logging = false
+
+  # ログフォーマット
+  config.log_formatter = ::Logger::Formatter.new
+
+  # 出力するログレベル
+  config.log_level = :debug
 end
