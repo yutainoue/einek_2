@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :concert_info do
     concert_name        'ほにゃらら演奏会'
     performer_name      'ほにゃらら楽団'
