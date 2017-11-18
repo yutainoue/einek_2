@@ -29,6 +29,7 @@ group :development, :test do
   gem 'pry-doc'
   gem 'pry-rails'
   gem 'rspec-rails'
+  gem 'seed-fu'
   gem 'spring-commands-rspec'
 end
 
