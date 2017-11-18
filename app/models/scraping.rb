@@ -7,10 +7,10 @@ class Scraping
   def concert_info
     session       = capybara_init
     urls          = concert_info_urls(session)
-    dummy_urls = [urls[0], urls[1], urls[2], urls[3], urls[4]]
+    # dummy_urls = [urls[0], urls[1], urls[2], urls[3], urls[4]]
     concert_infos = []
 
-    dummy_urls.each do |url|
+    urls.each do |url|
       begin
         page = html_parth(url, session)
         concert_info = ConcertInfo.new(parth_concert_info(page, url))
