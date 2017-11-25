@@ -5,24 +5,38 @@ class Scraping
   require 'capybara/poltergeist'
 
   def concert_info
-    session       = capybara_init
-    urls          = concert_info_urls(session)
-    # dummy_urls = [urls[0], urls[1], urls[2], urls[3], urls[4]]
+    session    = capybara_init
+    all_urls   = concert_info_urls(session)
+    all_urls   = all_urls[0..30]
+    exist_urls = ConcertInfo.pluck(:page_url)
+    new_urls   =  all_urls.select { |url| exist_urls.exclude?(url) }
     concert_infos = []
+    puts "new_urls:#{new_urls.count}"
 
-    urls.each do |url|
-      begin
-        page = html_parth(url, session)
-        concert_info = ConcertInfo.new(parth_concert_info(page, url))
-        concert_infos << concert_info if concert_info.performer_url.presence
-      rescue => e
-        log_warn('コンサート情報ページのスクレイピングに失敗しました', e)
+    new_urls.each_slice(20) do |urls|
+      puts '====='
+      urls.each do |url|
+        begin
+          puts "url:#{url}"
+          # 怒られないように2秒待つ
+          sleep 3
+          page         = html_parth(url, session)
+          concert_info = ConcertInfo.new(parth_concert_info(page, url))
+
+          # 楽団URLがないものは挟み込みの連絡できないため必要ない
+          concert_infos << concert_info if concert_info.performer_url.present?
+        rescue => e
+          log_warn('コンサート情報ページのスクレイピングに失敗しました', e)
+        end
       end
     end
 
+    puts 'Scraping Done'
+    # 先月のコンサート情報を削除する
+    old_concert = ConcertInfo.all.select { |x| x.tactdown_time < Time.now.beginning_of_month }
     begin
       ConcertInfo.transaction do
-        ConcertInfo.all.each(&:destroy!)
+        old_concert.each(&:destroy!)
         ConcertInfo.import(concert_infos)
       end
     rescue => e
@@ -58,12 +72,13 @@ class Scraping
 
   def parth_concert_info(page, url)
     {
-      concert:       page.search('.concertName').text.presence || '未記入',
-      performer:     page.search('.txt').text.gsub(/(のコンサート|楽団・演奏家)/, '').presence || '未記入',
-      hall:          page.search('.placeinfo').text.presence || '未記入',
-      opening_time:  exclusion_escape_character(page.search('.concertDate').text).presence || '未記入',
-      conductor:     page.search('.conductorName').text.presence || '未記入',
-      music_titles:  exclusion_escape_character(page.search('p.composer').text).presence || '未記入',
+      concert:       page.search('.concertName').text,
+      performer:     page.search('.txt').text.gsub(/(のコンサート|楽団・演奏家)/, ''),
+      hall:          page.search('.placeinfo').text,
+      tactdown_time: tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      opening_time:  opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      conductor:     page.search('.conductorName').text,
+      music_titles:  exclusion_escape_character(page.search('p.composer').text),
       performer_url: slice_text(page, 'URL：', '直接お問合せする際は'),
       page_url:      url
     }
@@ -84,5 +99,17 @@ class Scraping
   def html_parth(url, session)
     session.visit(url)
     Nokogiri::HTML.parse(session.html)
+  end
+
+  def tactdown_time_parse(text)
+    return if text.blank?
+    text[10..21] = ' '
+    DateTime.parse(text[0..15])
+  end
+
+  def opening_time_parse(text)
+    return if text.blank?
+    text[10..13] = ' '
+    DateTime.parse(text[0..15])
   end
 end

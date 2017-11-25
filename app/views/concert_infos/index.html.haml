@@ -1,27 +1,24 @@
 %h1 index
-= link_to 'スクレイピング', new_concert_infos_path
+= link_to 'スクレイピング',  {:controller => 'concert_infos', :action => 'new'}, data: {confirm: 'スクレイピングを開始しますか？'}
 %table.table.table-no-border
   %tr
     %th 演奏会名
-    %th 楽団名
     %th ホール名
     %th 開演日時
-    %th 指揮者
+    %th 開場時間
     %th 曲目
-    %th URL
+    %th リンク
   - @concert_infos.each do |concert|
     %tr
       %td
         = concert.concert
       %td
-        = concert.performer
-      %td
         = concert.hall
       %td
         = concert.opening_time
       %td
-        = concert.conductor
+        = concert.tactdown_time
       %td
         = concert.music_titles
       %td
-        = link_to(concert.performer_url, concert.performer_url, target: '_blank')
+        = link_to('楽団サイト', concert.performer_url, target: '_blank')

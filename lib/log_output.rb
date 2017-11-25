@@ -4,7 +4,7 @@ module LogOutput
   end
 
   def log_warn(m, e)
-    Rails.logger.worn { [m, e.message, *e.backtrace].join("\n") }
+    Rails.logger.warn { [m, e.message, *e.backtrace].join("\n") }
   end
 
   def log_error(m, e)

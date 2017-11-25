@@ -3,7 +3,8 @@ FactoryBot.define do
     concert             'ほにゃらら演奏会'
     performer           'ほにゃらら楽団'
     hall                'ほにゃららホール'
-    opening_time        Time.current
+    tactdown_time       Time.now
+    opening_time        Time.now
     conductor           'ほにゃららさん'
     music_titles        '交響曲ほにゃらら'
     contact_information 'xxx@example.com'
