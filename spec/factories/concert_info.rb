@@ -3,11 +3,11 @@ FactoryBot.define do
     concert             'ほにゃらら演奏会'
     performer           'ほにゃらら楽団'
     hall                'ほにゃららホール'
+    hall_prefecture     '東京都'
+    hall_ward           '新宿区'
     tactdown_time       Time.now
     opening_time        Time.now
-    conductor           'ほにゃららさん'
     music_titles        '交響曲ほにゃらら'
-    contact_information 'xxx@example.com'
     performer_url       'http://xxx'
     page_url            'http://yyy'
   end

@@ -4,12 +4,13 @@ class CreateConcertInfos < ActiveRecord::Migration[5.1]
       t.string   :concert
       t.string   :performer
       t.string   :hall
+      t.string   :hall_prefecture
+      t.string   :hall_ward
       t.datetime :tactdown_time
       t.datetime :opening_time
-      t.string   :conductor
       t.text     :music_titles
-      t.string   :performer_url
-      t.string   :page_url
+      t.string   :performer_url, null: false
+      t.string   :page_url, null: false, unique: true
 
       t.timestamps
     end

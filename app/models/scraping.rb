@@ -19,7 +19,7 @@ class Scraping
         begin
           puts "url:#{url}"
           # 怒られないように2秒待つ
-          sleep 3
+          sleep 2
           page         = html_parth(url, session)
           concert_info = ConcertInfo.new(parth_concert_info(page, url))
 
