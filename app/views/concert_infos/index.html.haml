@@ -4,21 +4,24 @@
   %tr
     %th 演奏会名
     %th ホール名
-    %th 開演日時
-    %th 開場時間
+    %th 開演日程
     %th 曲目
     %th リンク
   - @concert_infos.each do |concert|
     %tr
       %td
+        = "【#{concert.performer}】"
+        %br
         = concert.concert
       %td
         = concert.hall
+        %br
+        = "#{concert.hall_prefecture} #{concert.hall_ward}"
       %td
         = concert.opening_time
-      %td
+        %br
         = concert.tactdown_time
       %td
-        = concert.music_titles
+        = concert.music_titles.html_safe
       %td
         = link_to('楽団サイト', concert.performer_url, target: '_blank')

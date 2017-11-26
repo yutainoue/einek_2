@@ -7,7 +7,7 @@ class Scraping
   def concert_info
     session    = capybara_init
     all_urls   = concert_info_urls(session)
-    all_urls   = all_urls[0..30]
+    all_urls   = all_urls[0..10]
     exist_urls = ConcertInfo.pluck(:page_url)
     new_urls   =  all_urls.select { |url| exist_urls.exclude?(url) }
     concert_infos = []
@@ -72,23 +72,25 @@ class Scraping
 
   def parth_concert_info(page, url)
     {
-      concert:       page.search('.concertName').text,
-      performer:     page.search('.txt').text.gsub(/(のコンサート|楽団・演奏家)/, ''),
-      hall:          page.search('.placeinfo').text,
-      tactdown_time: tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      opening_time:  opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      conductor:     page.search('.conductorName').text,
-      music_titles:  exclusion_escape_character(page.search('p.composer').text),
-      performer_url: slice_text(page, 'URL：', '直接お問合せする際は'),
-      page_url:      url
+      concert:         page.search('.concertName').text,
+      performer:       page.search('.txt').text.gsub(/(のコンサート|楽団・演奏家)/, ''),
+      hall:            hall_parse(page.search('.placeinfo').text),
+      hall_prefecture: hall_prefecture_parse(page.search('.placeinfo').text),
+      hall_ward:       hall_ward_parse(page.search('.placeinfo').text),
+      tactdown_time:   tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      opening_time:    opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      music_titles:    exclusion_escape_character(page.search('p.composer').text).gsub(/(\r\n|\r|\n)/, '<br>'),
+      performer_url:   slice_text(page, 'URL：', '直接お問合せする際は'),
+      page_url:        url
     }
   end
 
   def slice_text(page, start_text, end_text)
-    start_point = page.text.gsub(/(\r|\n|\t| )/, '').index(start_text) + start_text.length
-    end_point   = page.text.gsub(/(\r|\n|\t| )/, '').index(end_text)
+    text        = page.text.gsub(/(\r|\n|\t| )/, '')
+    start_point = text.index(start_text) + start_text.length
+    end_point   = text.index(end_text)
     if start_point.presence && end_point.presence
-      page.text.gsub(/(\r|\n|\t| )/, '').slice(start_point...end_point)
+      text.slice(start_point...end_point)
     end
   end
 
@@ -111,5 +113,30 @@ class Scraping
     return if text.blank?
     text[10..13] = ' '
     DateTime.parse(text[0..15])
+  end
+
+  def hall_parse(text)
+    return if text.blank?
+    end_point = text.index('（')
+    text[0...end_point]
+  end
+
+  def hall_prefecture_parse(text)
+    return if text.blank?
+    text = text[/（(.*?)）/, 1].gsub(/ |　|/, '')
+    end_point = text.index(/都|道|府|県/)
+
+    end_point = 2 if text.include?('京都府')
+    text[0..end_point]
+  end
+
+  def hall_ward_parse(text)
+    return if text.blank?
+    text = text[/（(.*?)）/, 1].gsub(/ |　|/, '')
+    start_point = text.index(/都|道|府|県/) + 1
+    end_point = text.length
+
+    start_point = 3 if text.include?('京都府')
+    text[start_point..end_point]
   end
 end
