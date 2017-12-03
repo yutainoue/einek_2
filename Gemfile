@@ -5,25 +5,30 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'activerecord-import'
+gem 'bootstrap-sass'
+gem 'capybara'
 gem 'coffee-rails', '~> 4.2'
 gem 'erb2haml'
 gem 'haml-rails'
 gem 'jbuilder', '~> 2.5'
+gem 'mechanize'
 gem 'mysql2'
+gem 'poltergeist'
 gem 'puma', '~> 3.7'
 gem 'rails', '5.1.4'
-gem 'sass-rails', '~> 5.0'
-gem 'turbolinks', '~> 5'
+gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'guard-rspec'
   gem 'pry-byebug'
   gem 'pry-doc'
   gem 'pry-rails'
   gem 'rspec-rails'
+  gem 'seed-fu'
   gem 'spring-commands-rspec'
 end
 
@@ -35,11 +40,9 @@ group :development do
 end
 
 group :test do
-  gem 'capybara'
   gem 'database_cleaner'
   gem 'faker'
   gem 'launchy'
-  gem 'poltergeist'
   gem 'rails-controller-testing'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'

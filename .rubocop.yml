@@ -13,3 +13,7 @@ Metrics/BlockLength:
 # 改行するブロックで{}を使っても良い
 Style/BlockDelimiters:
   Enabled: false
+
+# frozen_string_literal: trueなんていらない
+Style/FrozenStringLiteralComment:
+  Enabled: false

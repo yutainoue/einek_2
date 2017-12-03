@@ -1,13 +1,14 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :concert_info do
-    concert_name        'ほにゃらら演奏会'
-    performer_name      'ほにゃらら楽団'
+    concert             'ほにゃらら演奏会'
+    performer           'ほにゃらら楽団'
     hall                'ほにゃららホール'
-    tact_down_time      Time.current
-    opening_time        Time.current
-    conductor           'ほにゃららさん'
+    hall_prefecture     '東京都'
+    hall_ward           '新宿区'
+    tactdown_time       Time.now
+    opening_time        Time.now
     music_titles        '交響曲ほにゃらら'
-    contact_information 'xxx@example.com'
-    url                 'http://xxx'
+    performer_url       'http://xxx'
+    page_url            'http://yyy'
   end
 end

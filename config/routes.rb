@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  root 'concert_info#index'
-  resources :concert_info, only: [:index]
+  root 'concert_infos#index'
+  resource :concert_infos, only: %i[index new]
 end

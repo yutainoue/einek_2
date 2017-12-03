@@ -13,15 +13,16 @@
 ActiveRecord::Schema.define(version: 20171103040345) do
 
   create_table "concert_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "concert_name"
-    t.string "performer_name"
+    t.string "concert"
+    t.string "performer"
     t.string "hall"
-    t.date "tact_down_time"
-    t.date "opening_time"
-    t.string "conductor"
+    t.string "hall_prefecture"
+    t.string "hall_ward"
+    t.datetime "tactdown_time"
+    t.datetime "opening_time"
     t.text "music_titles"
-    t.string "contact_information"
-    t.string "url"
+    t.string "performer_url", null: false
+    t.string "page_url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ConcertInfoController do
+RSpec.describe ConcertInfosController do
   describe 'index' do
     it '一覧画面の表示に成功すること' do
       get :index
