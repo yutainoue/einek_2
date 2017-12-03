@@ -2,8 +2,13 @@
 = link_to 'スクレイピング',  {:controller => 'concert_infos', :action => 'new'}, data: {confirm: 'スクレイピングを開始しますか？'}
 = search_form_for @search, url: {action: :index} do |f|
   %div
-    = f.label :concert_cont, '演奏会名'
-    = f.text_field :concert_cont
+    = f.label :hall_cont, 'ホール名'
+    = f.text_field :hall_cont
+    = f.label :hall_prefecture_cont, '地域'
+    = f.text_field :hall_prefecture_cont
+    = f.label :tactdown_time_cont, '開催月'
+    = f.date_field :tactdown_time_gteq, placeholder: 'YYYY/MM/DD'
+    = f.date_field :tactdown_time_lteq, placeholder: 'YYYY/MM/DD'
     = f.submit "Search"
 %table.table.table-no-border
   %tr
