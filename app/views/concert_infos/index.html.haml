@@ -1,5 +1,10 @@
 %h1 index
 = link_to 'スクレイピング',  {:controller => 'concert_infos', :action => 'new'}, data: {confirm: 'スクレイピングを開始しますか？'}
+= search_form_for @search, url: {action: :index} do |f|
+  %div
+    = f.label :concert_cont, '演奏会名'
+    = f.text_field :concert_cont
+    = f.submit "Search"
 %table.table.table-no-border
   %tr
     %th 演奏会名

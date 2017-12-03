@@ -1,6 +1,7 @@
 class ConcertInfosController < ApplicationController
   def index
-    @concert_infos = ConcertInfo.all.order('tactdown_time ASC')
+    @search = ConcertInfo.search(params[:q])
+    @concert_infos = @search.result.order('tactdown_time ASC')
   end
 
   def new

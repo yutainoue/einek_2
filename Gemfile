@@ -17,6 +17,7 @@ gem 'mysql2'
 gem 'poltergeist'
 gem 'puma', '~> 3.7'
 gem 'rails', '5.1.4'
+gem 'ransack'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
 
