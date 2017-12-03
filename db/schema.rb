@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20171103040345) do
     t.string "page_url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["tactdown_time"], name: "index_concert_infos_on_tactdown_time"
   end
 
 end

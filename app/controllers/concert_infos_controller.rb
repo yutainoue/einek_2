@@ -1,6 +1,6 @@
 class ConcertInfosController < ApplicationController
   def index
-    @concert_infos = ConcertInfo.all
+    @concert_infos = ConcertInfo.all.order('tactdown_time ASC')
   end
 
   def new

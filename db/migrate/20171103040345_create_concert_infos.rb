@@ -11,6 +11,7 @@ class CreateConcertInfos < ActiveRecord::Migration[5.1]
       t.text     :music_titles
       t.string   :performer_url, null: false
       t.string   :page_url, null: false, unique: true
+      t.index    :tactdown_time
 
       t.timestamps
     end
