@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'active_hash'
 gem 'activerecord-import'
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'

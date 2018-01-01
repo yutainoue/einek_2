@@ -1,0 +1,3 @@
+= search_form_for search, url: {action: :index} do |f|
+  = f.label :hall_cont, 'ホール名'
+  = f.collection_select :hall_cont, HallMaster.where(prefecture_id: prefecture_id.to_i), :id, :name, include_blank: 'すべて'

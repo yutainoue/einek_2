@@ -24,6 +24,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    active_hash (1.5.3)
+      activesupport (>= 2.2.2)
     activejob (5.1.4)
       activesupport (= 5.1.4)
       globalid (>= 0.3.6)
@@ -358,6 +360,7 @@ PLATFORMS
   x86-mswin32
 
 DEPENDENCIES
+  active_hash
   activerecord-import
   bootstrap-sass
   bootstrap3-datetimepicker-rails (~> 4.17.37)
