@@ -23,6 +23,19 @@ class Scraping
           page         = html_parth(url, session)
           concert_info = ConcertInfo.new(parth_concert_info(page, url))
 
+          HallPrefectureMaster.all.each do |prefecture|
+            if concert_info.hall_prefecture == prefecture.name
+              concert_info.hall_prefecture_number = prefecture.id
+            end
+          end
+
+          prefecture_halls = HallMaster.where(prefecture_id: concert_info.hall_prefecture_number)
+          prefecture_halls.each do |hall|
+            if concert_info.hall.match?(/#{hall.search_name}/)
+              concert_info.hall_number = hall.id
+            end
+          end
+
           # 楽団URLがないものは挟み込みの連絡できないため必要ない
           concert_infos << concert_info if concert_info.performer_url.present?
         rescue => e

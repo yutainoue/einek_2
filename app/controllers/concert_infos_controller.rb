@@ -2,6 +2,11 @@ class ConcertInfosController < ApplicationController
   def index
     @search = ConcertInfo.search(params[:q])
     @concert_infos = @search.result.order('tactdown_time ASC')
+    @prefecture_id = if params[:q].present?
+                       params[:q][:hall_prefecture_number_eq]
+                     else
+                       0
+                     end
   end
 
   def hall_names

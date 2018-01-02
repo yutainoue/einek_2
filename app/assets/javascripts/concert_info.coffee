@@ -1,4 +1,4 @@
-$(document).on 'change', '#q_hall_prefecture_cont', ->
+$(document).on 'change', '#q_hall_prefecture_number_eq', ->
   $.ajax(
     type: 'GET'
     url: '/concert_infos/hall_names'
