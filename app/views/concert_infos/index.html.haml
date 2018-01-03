@@ -3,7 +3,7 @@
 = search_form_for @search, url: {action: :index} do |f|
   %div
     = f.label :hall_prefecture_number_eq, '地域'
-    = f.collection_select :hall_prefecture_number_eq, HallPrefectureMaster.all, :id, :name, include_blank: 'すべて'
+    = f.collection_select :hall_prefecture_number_eq, HallPrefectureMaster.all, :id, :name, {include_blank: 'すべて'}, {class: 'chosen-select'}
     %div.hall-area
       = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
     = f.label :tactdown_time_cont, '開催月'
