@@ -1,4 +1,4 @@
-class Scraping
+class Scraping # 将来的には非同期でうごかせるようにする
   require 'log_output'
   include LogOutput
   require 'capybara'
@@ -13,7 +13,7 @@ class Scraping
       urls.each do |url|
         begin
           puts "url:#{url}"
-          sleep 2 #怒られないように2秒待つ
+          sleep 2 # 怒られないように2秒待つ
 
           page         = html_parth(url, session)
           concert_info = ConcertInfo.new(parth_concert_info(page, url))
@@ -43,14 +43,15 @@ class Scraping
     end
   end
 
-private
+  private
 
   def new_urls(session)
     session    = capybara_init
     all_urls   = concert_info_urls(session)
-    all_urls   = all_urls[0..100] #実装中に大量スクレイピングしないように仮実装
+    all_urls   = all_urls[0..100] # 実装中に大量スクレイピングしないように仮実装
     exist_urls = ConcertInfo.pluck(:page_url)
-    new_urls   =  all_urls.select { |url| exist_urls.exclude?(url) }
+    new_urls   = all_urls.select { |url| exist_urls.exclude?(url) }
+    new_urls
   end
 
   def capybara_init
@@ -147,7 +148,7 @@ private
   end
 
   def hall_prefecture_number_set(concert_info)
-    PrefectureMaster.all.each do |prefecture|
+    PrefectureMaster.find_each do |prefecture|
       if concert_info.hall_prefecture == prefecture.name
         concert_info.hall_prefecture_number = prefecture.id
         break
