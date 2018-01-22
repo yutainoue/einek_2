@@ -5,7 +5,7 @@ class ConcertInfosController < ApplicationController
     @prefecture_id = if params[:q].present?
                        params[:q][:hall_prefecture_number_eq]
                      else
-                       0
+                       ''
                      end
   end
 
