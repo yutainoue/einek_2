@@ -5,18 +5,26 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'active_hash'
 gem 'activerecord-import'
 gem 'bootstrap-sass'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
 gem 'capybara'
+gem 'chosen-rails'
 gem 'coffee-rails', '~> 4.2'
+gem 'compass-rails', '~> 2.0.alpha.0'
 gem 'erb2haml'
+gem 'font-awesome-rails'
 gem 'haml-rails'
 gem 'jbuilder', '~> 2.5'
+gem 'jquery-rails'
 gem 'mechanize'
+gem 'momentjs-rails', '>= 2.9.0'
 gem 'mysql2'
 gem 'poltergeist'
 gem 'puma', '~> 3.7'
 gem 'rails', '5.1.4'
+gem 'ransack'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
 

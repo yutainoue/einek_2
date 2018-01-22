@@ -16,7 +16,9 @@ ActiveRecord::Schema.define(version: 20171103040345) do
     t.string "concert"
     t.string "performer"
     t.string "hall"
+    t.integer "hall_number", default: 0
     t.string "hall_prefecture"
+    t.integer "hall_prefecture_number", default: 0
     t.string "hall_ward"
     t.datetime "tactdown_time"
     t.datetime "opening_time"
@@ -25,6 +27,9 @@ ActiveRecord::Schema.define(version: 20171103040345) do
     t.string "page_url", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["hall"], name: "index_concert_infos_on_hall"
+    t.index ["hall_prefecture"], name: "index_concert_infos_on_hall_prefecture"
+    t.index ["tactdown_time"], name: "index_concert_infos_on_tactdown_time"
   end
 
 end

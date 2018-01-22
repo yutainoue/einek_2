@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
   root 'concert_infos#index'
-  resource :concert_infos, only: %i[index new]
+  resources :concert_infos, only: %i[index new] do
+    collection do
+      get 'hall_names'
+    end
+  end
 end

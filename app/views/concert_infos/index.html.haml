@@ -1,5 +1,14 @@
 %h1 index
-= link_to 'スクレイピング',  {:controller => 'concert_infos', :action => 'new'}, data: {confirm: 'スクレイピングを開始しますか？'}
+= link_to 'スクレイピング', controller: 'concert_infos', action: 'new', data: { confirm: 'スクレイピングを開始しますか？' }
+= search_form_for @search, url: { action: :index } do |f|
+  %div
+    = f.label :hall_prefecture_number_eq, '地域'
+    = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, include_blank: 'すべて', class: 'chosen-select'
+    = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
+    = f.label :tactdown_time_cont, '開催月'
+    = f.date_field :tactdown_time_gteq
+    = f.date_field :tactdown_time_lteq_end_of_day
+    = f.submit '検索'
 %table.table.table-no-border
   %tr
     %th 演奏会名

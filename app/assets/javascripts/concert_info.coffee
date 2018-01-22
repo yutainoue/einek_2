@@ -1,3 +1,19 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$(document).on 'change', '#q_hall_prefecture_number_eq', ->
+  $.ajax(
+    type: 'GET'
+    url: '/concert_infos/hall_names'
+    data: {
+      prefecture_id: $(this).val()
+    }
+  ).done (data) ->
+    $('.hall-area').html(data)
+    $(".chosen-select").chosen(
+      no_results_text: '一致するものがありません:'
+      search_contains: true
+    )
+
+$ ->
+  $(".chosen-select").chosen(
+    no_results_text: '一致するものがありません:'
+    search_contains: true
+  )
