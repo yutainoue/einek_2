@@ -4,9 +4,9 @@ class CreateConcertInfos < ActiveRecord::Migration[5.1]
       t.string   :concert
       t.string   :performer
       t.string   :hall
-      t.integer  :hall_number
+      t.integer  :hall_number,            default: 0
       t.string   :hall_prefecture
-      t.integer  :hall_prefecture_number
+      t.integer  :hall_prefecture_number, default: 0
       t.string   :hall_ward
       t.datetime :tactdown_time
       t.datetime :opening_time

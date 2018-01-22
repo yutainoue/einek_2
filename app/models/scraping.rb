@@ -5,36 +5,20 @@ class Scraping
   require 'capybara/poltergeist'
 
   def concert_info
-    session    = capybara_init
-    all_urls   = concert_info_urls(session)
-    all_urls   = all_urls[0..10]
-    exist_urls = ConcertInfo.pluck(:page_url)
-    new_urls   =  all_urls.select { |url| exist_urls.exclude?(url) }
+    session = capybara_init
     concert_infos = []
-    puts "new_urls:#{new_urls.count}"
 
-    new_urls.each_slice(20) do |urls|
+    new_urls(session).each_slice(20) do |urls|
       puts '====='
       urls.each do |url|
         begin
           puts "url:#{url}"
-          # 怒られないように2秒待つ
-          sleep 2
+          sleep 2 #怒られないように2秒待つ
+
           page         = html_parth(url, session)
           concert_info = ConcertInfo.new(parth_concert_info(page, url))
-
-          HallPrefectureMaster.all.each do |prefecture|
-            if concert_info.hall_prefecture == prefecture.name
-              concert_info.hall_prefecture_number = prefecture.id
-            end
-          end
-
-          prefecture_halls = HallMaster.where(prefecture_id: concert_info.hall_prefecture_number)
-          prefecture_halls.each do |hall|
-            if concert_info.hall.match?(/#{hall.search_name}/)
-              concert_info.hall_number = hall.id
-            end
-          end
+          hall_prefecture_number_set(concert_info)
+          hall_number_set(concert_info)
 
           # 楽団URLがないものは挟み込みの連絡できないため必要ない
           concert_infos << concert_info if concert_info.performer_url.present?
@@ -46,10 +30,12 @@ class Scraping
 
     puts 'Scraping Done'
     # 先月のコンサート情報を削除する
-    old_concert = ConcertInfo.all.select { |x| x.tactdown_time < Time.now.beginning_of_month }
+    # 将来的には別メソッドにしよう
+    # old_concert = ConcertInfo.all.select { |x| x.tactdown_time < Time.now.beginning_of_month }
+
     begin
       ConcertInfo.transaction do
-        old_concert.each(&:destroy!)
+        # old_concert.each(&:destroy!)
         ConcertInfo.import(concert_infos)
       end
     rescue => e
@@ -57,10 +43,17 @@ class Scraping
     end
   end
 
-  private
+private
+
+  def new_urls(session)
+    session    = capybara_init
+    all_urls   = concert_info_urls(session)
+    all_urls   = all_urls[0..100] #実装中に大量スクレイピングしないように仮実装
+    exist_urls = ConcertInfo.pluck(:page_url)
+    new_urls   =  all_urls.select { |url| exist_urls.exclude?(url) }
+  end
 
   def capybara_init
-    # Capybaraのオプション調べる
     Capybara.run_server = false
     Capybara.register_driver :poltergeist do |app|
       Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 60)
@@ -151,5 +144,29 @@ class Scraping
 
     start_point = 3 if text.include?('京都府')
     text[start_point..end_point]
+  end
+
+  def hall_prefecture_number_set(concert_info)
+    PrefectureMaster.all.each do |prefecture|
+      if concert_info.hall_prefecture == prefecture.name
+        concert_info.hall_prefecture_number = prefecture.id
+        break
+      end
+    end
+  end
+
+  def hall_number_set(concert_info)
+    prefecture_halls = HallMaster.where(prefecture_id: concert_info.hall_prefecture_number)
+
+    prefecture_halls.each do |hall|
+      break if concert_info.hall_prefecture_number.blank?
+
+      hall.search_name.split(',').each do |name|
+        if concert_info.hall.match?(/#{name}/)
+          concert_info.hall_number = hall.id
+          break
+        end
+      end
+    end
   end
 end
