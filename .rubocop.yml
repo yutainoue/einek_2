@@ -17,3 +17,6 @@ Style/BlockDelimiters:
 # frozen_string_literal: trueなんていらない
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Metrics/LineLength:
+  Max: 150
