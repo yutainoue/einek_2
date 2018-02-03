@@ -5,4 +5,6 @@ Rails.application.routes.draw do
       get 'hall_names'
     end
   end
+
+  resource :excel, only: :show
 end
