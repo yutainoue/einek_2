@@ -31,7 +31,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
     puts 'Scraping Done'
     # 先月のコンサート情報を削除する
     # 将来的には別メソッドにしよう
-    # old_concert = ConcertInfo.all.select { |x| x.tactdown_time < Time.now.beginning_of_month }
+    old_concert = ConcertInfo.all.select { |x| x.tactdown_time < Time.now.beginning_of_month }
 
     begin
       ConcertInfo.transaction do
@@ -48,7 +48,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
   def new_urls(session)
     session    = capybara_init
     all_urls   = concert_info_urls(session)
-    all_urls   = all_urls[0..100] # 実装中に大量スクレイピングしないように仮実装
+    all_urls   = all_urls[0..10] # 実装中に大量スクレイピングしないように仮実装
     exist_urls = ConcertInfo.pluck(:page_url)
     new_urls   = all_urls.select { |url| exist_urls.exclude?(url) }
     new_urls
@@ -84,9 +84,9 @@ class Scraping # 将来的には非同期でうごかせるようにする
       hall:            hall_parse(page.search('.placeinfo').text),
       hall_prefecture: hall_prefecture_parse(page.search('.placeinfo').text),
       hall_ward:       hall_ward_parse(page.search('.placeinfo').text),
-      tactdown_time:   tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      opening_time:    opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      music_titles:    exclusion_escape_character(page.search('p.composer').text).gsub(/(\r\n|\r|\n)/, '<br>'),
+      opening_time:   tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      tactdown_time:    opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      music_titles:    exclusion_escape_character(page.search('p.composer').text).chomp.gsub(/(\r\n|\r|\n)/, '<br>'),
       performer_url:   slice_text(page, 'URL：', '直接お問合せする際は'),
       page_url:        url
     }
@@ -148,7 +148,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
   end
 
   def hall_prefecture_number_set(concert_info)
-    PrefectureMaster.find_each do |prefecture|
+    PrefectureMaster.all.each do |prefecture|
       if concert_info.hall_prefecture == prefecture.name
         concert_info.hall_prefecture_number = prefecture.id
         break
