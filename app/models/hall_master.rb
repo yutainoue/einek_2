@@ -1134,7 +1134,7 @@ class HallMaster < ActiveHash::Base
     { id: 1131, prefecture_id: 34, search_name: '府中市福祉', name: '府中市福祉会館' },
     { id: 1112, prefecture_id: 34, search_name: '府中市文化', name: '府中市文化センター' },
     { id: 1137, prefecture_id: 35, search_name: 'サンビーム', name: 'サンビームやない' },
-    { id: 1141, prefecture_id: 35, search_name: 'シンンフォニア', name: 'シンンフォニア岩国' },
+    { id: 1141, prefecture_id: 35, search_name: 'シンフォニア', name: 'シンフォニア岩国' },
     { id: 1135, prefecture_id: 35, search_name: '渡辺翁', name: '宇部市渡辺翁記念会館' },
     { id: 1147, prefecture_id: 35, search_name: '菊川ふれあい,アブニール', name: '下関市菊川ふれあい会館・アブニール' },
     { id: 1138, prefecture_id: 35, search_name: '下関市民', name: '下関市民会館' },

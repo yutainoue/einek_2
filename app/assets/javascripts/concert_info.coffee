@@ -6,14 +6,14 @@ $(document).on 'change', '#q_hall_prefecture_number_eq', ->
       prefecture_id: $(this).val()
     }
   ).done (data) ->
-    $('.hall-area').html(data)
-    $(".chosen-select").chosen(
+    $('.hall_names').html(data)
+    $('.chosen-select').chosen(
       no_results_text: '一致するものがありません:'
       search_contains: true
     )
 
 $ ->
-  $(".chosen-select").chosen(
+  $('.chosen-select').chosen(
     no_results_text: '一致するものがありません:'
     search_contains: true
   )
