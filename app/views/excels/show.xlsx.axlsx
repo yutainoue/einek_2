@@ -29,28 +29,28 @@ wb.add_worksheet(name: '演奏会一覧') do |sheet|
     sheet.rows[2 + row_count].cells[1].style = styles[:border]
     sheet.merge_cells sheet.rows[2 + row_count].cells[(0..1)]
 
-    ##開演時間
-    sheet.rows[3 + row_count].cells[0].value = '開演時間'
+    ##楽団名
+    sheet.rows[3 + row_count].cells[0].value = '楽団名'
     sheet.rows[3 + row_count].cells[0].style = styles[:border]
-    sheet.rows[3 + row_count].cells[1].value = concert_info.tactdown_time.strftime('%Y年%m月%d日 %H:%M')
+    sheet.rows[3 + row_count].cells[1].value = concert_info.performer
     sheet.rows[3 + row_count].cells[1].style = styles[:border]
 
-    ##開場時間
-    sheet.rows[4 + row_count].cells[0].value = '開場時間'
+    ##楽団HP
+    sheet.rows[4 + row_count].cells[0].value = '楽団HP'
     sheet.rows[4 + row_count].cells[0].style = styles[:border]
-    sheet.rows[4 + row_count].cells[1].value = concert_info.opening_time.strftime('%Y年%m月%d日 %H:%M')
+    sheet.rows[4 + row_count].cells[1].value = concert_info.page_url
     sheet.rows[4 + row_count].cells[1].style = styles[:border]
 
-    ##楽団名
-    sheet.rows[5 + row_count].cells[0].value = '楽団名'
+    ##開演時間
+    sheet.rows[5 + row_count].cells[0].value = '開演時間'
     sheet.rows[5 + row_count].cells[0].style = styles[:border]
-    sheet.rows[5 + row_count].cells[1].value = concert_info.performer
+    sheet.rows[5 + row_count].cells[1].value = concert_info.tactdown_time.strftime('%Y年%m月%d日 %H:%M')
     sheet.rows[5 + row_count].cells[1].style = styles[:border]
 
-    ##楽団HP
-    sheet.rows[6 + row_count].cells[0].value = '楽団HP'
+    ##開場時間
+    sheet.rows[6 + row_count].cells[0].value = '開場時間'
     sheet.rows[6 + row_count].cells[0].style = styles[:border]
-    sheet.rows[6 + row_count].cells[1].value = concert_info.page_url
+    sheet.rows[6 + row_count].cells[1].value = concert_info.opening_time.strftime('%Y年%m月%d日 %H:%M')
     sheet.rows[6 + row_count].cells[1].style = styles[:border]
 
     #下地となる空行を追加(演奏曲目の手前まで)
