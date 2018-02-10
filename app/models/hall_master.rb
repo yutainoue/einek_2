@@ -379,7 +379,7 @@ class HallMaster < ActiveHash::Base
     { id: 361, prefecture_id: 11, search_name: '北本市文化', name: '北本市文化センター' },
     { id: 353, prefecture_id: 11, search_name: '本庄市民', name: '本庄市民文化会館' },
     { id: 379, prefecture_id: 11, search_name: '毛呂山町福祉,ウィズもろやま', name: '毛呂山町福祉会館・ウィズもろやま' },
-    { id: 355, prefecture_id: 11, search_name: '和光市民,アゼリア', name: '和光市民文化センター サン・アゼリア' },
+    { id: 355, prefecture_id: 11, search_name: '和光市民,アゼリア', name: '和光市民文化センター サンアゼリア' },
     { id: 381, prefecture_id: 11, search_name: '蕨市民会館,コンクレレ', name: '蕨市民会館コンクレレホール' },
     { id: 405, prefecture_id: 12, search_name: '夷隅文化', name: 'いすみ市夷隅文化会館' },
     { id: 398, prefecture_id: 12, search_name: 'ふれあいプラザさかえ', name: 'ふれあいプラザさかえ' },
