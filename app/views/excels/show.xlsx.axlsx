@@ -1,0 +1,79 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: '演奏会一覧') do |sheet|
+  #シート幅の調整
+  sheet.column_widths 8, 80
+
+  #スタイル定義
+  styles = {
+    title:      sheet.styles.add_style(sz: 18),
+    sub_title:  sheet.styles.add_style(sz: 14, border: { style: :thin, color: '00' }),
+    border:     sheet.styles.add_style(sz: 10, border: { style: :thin, color: '00' }),
+    line_break: sheet.styles.add_style(sz: 10, border: { style: :thin, color: '00' }, alignment: { wrap_text: true })
+  }
+
+  #タイトルを追加
+  2.times {sheet.add_row Array.new(2, '')}
+  sheet.rows[0].cells[0].value = '演奏会一覧'
+  sheet.merge_cells sheet.rows[0].cells[(0..1)]
+  sheet.rows[0].cells[0].style = styles[:title]
+
+  @concert_infos.each.with_index do |concert_info, i|
+    #下地となる空行を追加(演奏曲目の手前まで)
+    5.times {sheet.add_row Array.new(2, '')}
+
+    row_count = i * 10
+
+    ##演奏会名
+    sheet.rows[2 + row_count].cells[0].value = concert_info.concert
+    sheet.rows[2 + row_count].cells[0].style = styles[:sub_title]
+    sheet.rows[2 + row_count].cells[1].style = styles[:border]
+    sheet.merge_cells sheet.rows[2 + row_count].cells[(0..1)]
+
+    ##楽団名
+    sheet.rows[3 + row_count].cells[0].value = '楽団名'
+    sheet.rows[3 + row_count].cells[0].style = styles[:border]
+    sheet.rows[3 + row_count].cells[1].value = concert_info.performer
+    sheet.rows[3 + row_count].cells[1].style = styles[:border]
+
+    ##楽団HP
+    sheet.rows[4 + row_count].cells[0].value = '楽団HP'
+    sheet.rows[4 + row_count].cells[0].style = styles[:border]
+    sheet.rows[4 + row_count].cells[1].value = concert_info.page_url
+    sheet.rows[4 + row_count].cells[1].style = styles[:border]
+
+    ##開演時間
+    sheet.rows[5 + row_count].cells[0].value = '開演時間'
+    sheet.rows[5 + row_count].cells[0].style = styles[:border]
+    sheet.rows[5 + row_count].cells[1].value = concert_info.tactdown_time.strftime('%Y年%m月%d日 %H:%M')
+    sheet.rows[5 + row_count].cells[1].style = styles[:border]
+
+    ##開場時間
+    sheet.rows[6 + row_count].cells[0].value = '開場時間'
+    sheet.rows[6 + row_count].cells[0].style = styles[:border]
+    sheet.rows[6 + row_count].cells[1].value = concert_info.opening_time.strftime('%Y年%m月%d日 %H:%M')
+    sheet.rows[6 + row_count].cells[1].style = styles[:border]
+
+    #下地となる空行を追加(演奏曲目のみ)
+    sheet.add_row Array.new(2, ''), :height => 12 * concert_info.music_titles.scan('<br>').length.next
+
+    ##演奏曲目
+    sheet.rows[7 + row_count].cells[0].value = '演奏曲目'
+    sheet.rows[7 + row_count].cells[0].style = styles[:border]
+    sheet.rows[7 + row_count].cells[1].value = concert_info.music_titles.gsub(/<br>/, "\r\n")
+    sheet.rows[7 + row_count].cells[1].style = styles[:line_break]
+
+    #下地となる空行を追加
+    4.times {sheet.add_row Array.new(2, '')}
+
+    ##ホール
+    sheet.rows[8 + row_count].cells[0].value = 'ホール'
+    sheet.rows[8 + row_count].cells[0].style = styles[:border]
+    sheet.rows[8 + row_count].cells[1].value = concert_info.hall
+    sheet.rows[8 + row_count].cells[1].style = styles[:border]
+
+    ##備考
+    sheet.rows[9 + row_count].cells[0].value = '備考'
+    sheet.rows[9 + row_count].cells[0].style = styles[:border]
+    sheet.rows[9 + row_count].cells[1].style = styles[:border]
+  end
+end

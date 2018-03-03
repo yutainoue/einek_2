@@ -7,6 +7,8 @@ end
 
 gem 'active_hash'
 gem 'activerecord-import'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'axlsx_rails'
 gem 'bootstrap-sass'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
 gem 'capybara'
@@ -25,10 +27,12 @@ gem 'poltergeist'
 gem 'puma', '~> 3.7'
 gem 'rails', '5.1.4'
 gem 'ransack'
+gem 'rubyzip', '>= 1.2.1'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
+  gem 'xray-rails'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'guard-rspec'
