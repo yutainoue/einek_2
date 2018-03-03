@@ -6,5 +6,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :excel, only: :show
+  resource :export, only: :show
 end
