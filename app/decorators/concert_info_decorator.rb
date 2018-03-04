@@ -1,4 +1,8 @@
 module ConcertInfoDecorator
+  def title
+    "#{concert}<br>(演奏:#{performer})"
+  end
+
   def schedule
     date     = opening_time.strftime('%Y年%m月%d日')
     opening  = opening_time.strftime('%H:%M')

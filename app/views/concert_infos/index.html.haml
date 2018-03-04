@@ -24,9 +24,7 @@
   - @concert_infos.each do |concert|
     %tr
       %td
-        = "【#{concert.performer}】"
-        %br
-        = concert.concert
+        = concert.title.html_safe
       %td
         = concert.hall
         %br
