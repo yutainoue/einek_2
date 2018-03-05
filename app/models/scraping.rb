@@ -21,7 +21,9 @@ class Scraping # 将来的には非同期でうごかせるようにする
           hall_number_set(concert_info)
 
           # 楽団URLがないものは挟み込みの連絡できないため必要ない
-          concert_infos << concert_info if concert_info.performer_url.present?
+          if concert_info.performer_url.start_with?('http')
+            concert_infos << concert_info
+          end
         rescue => e
           log_warn('コンサート情報ページのスクレイピングに失敗しました', e)
         end
@@ -36,7 +38,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
     begin
       ConcertInfo.transaction do
         # old_concert.each(&:destroy!)
-        # ConcertInfo.import(concert_infos)
+        ConcertInfo.import(concert_infos)
       end
     rescue => e
       log_error('コンサート情報の更新に失敗しました', e)
