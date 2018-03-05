@@ -36,7 +36,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
     begin
       ConcertInfo.transaction do
         # old_concert.each(&:destroy!)
-        ConcertInfo.import(concert_infos)
+        # ConcertInfo.import(concert_infos)
       end
     rescue => e
       log_error('コンサート情報の更新に失敗しました', e)
@@ -84,9 +84,9 @@ class Scraping # 将来的には非同期でうごかせるようにする
       hall:            hall_parse(page.search('.placeinfo').text),
       hall_prefecture: hall_prefecture_parse(page.search('.placeinfo').text),
       hall_ward:       hall_ward_parse(page.search('.placeinfo').text),
-      opening_time:   tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      tactdown_time:    opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      music_titles:    exclusion_escape_character(page.search('p.composer').text).chomp.gsub(/(\r\n|\r|\n)/, '<br>'),
+      opening_time:    tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      tactdown_time:   opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      music_titles:    exclusion_escape_character(page.search('p.composer').text).chomp,
       performer_url:   slice_text(page, 'URL：', '直接お問合せする際は'),
       page_url:        url
     }

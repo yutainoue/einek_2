@@ -29,6 +29,7 @@ gem 'puma', '~> 3.7'
 gem 'rails', '5.1.4'
 gem 'ransack'
 gem 'rubyzip', '>= 1.2.1'
+gem 'sanitize'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
 

@@ -25,14 +25,14 @@
   - @concert_infos.each do |concert|
     %tr
       %td.concert_info_title
-        = concert.title.html_safe
+        = simple_format(concert.title)
       %td.concert_info_hall
         = concert.hall
         %br
         = "#{concert.hall_prefecture} #{concert.hall_ward}"
       %td.concert_info_schedule
-        = concert.schedule.html_safe
+        = simple_format(concert.schedule)
       %td.concert_info_music_title
-        = concert.music_title.html_safe
+        = simple_format(concert.music_title)
       %td.concert_info_link
         = concert.performer_page_link
