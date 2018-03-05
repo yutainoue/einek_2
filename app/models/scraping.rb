@@ -7,9 +7,13 @@ class Scraping # 将来的には非同期でうごかせるようにする
   def concert_info
     session = capybara_init
     concert_infos = []
+    concert_urls = new_urls(session)
+    urls_count = concert_urls.count
 
-    new_urls(session).each_slice(20) do |urls|
-      puts '====='
+    concert_urls.each_slice(20) do |urls|
+      urls_count -= 20
+      puts '=============================='
+      puts "残り：#{urls_count}"
       urls.each do |url|
         begin
           puts "url:#{url}"
@@ -50,7 +54,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
   def new_urls(session)
     session    = capybara_init
     all_urls   = concert_info_urls(session)
-    all_urls   = all_urls[0..10] # 実装中に大量スクレイピングしないように仮実装
+    all_urls   = all_urls[0..100] # 実装中に大量スクレイピングしないように仮実装
     exist_urls = ConcertInfo.pluck(:page_url)
     new_urls   = all_urls.select { |url| exist_urls.exclude?(url) }
     new_urls
@@ -66,8 +70,8 @@ class Scraping # 将来的には非同期でうごかせるようにする
 
   def concert_info_urls(session)
     concert_info_urls = []
-    urls = ["http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}"]
-    # "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
+    urls = [#{}"http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}",
+            "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
 
     urls.each do |url|
       page = html_parth(url, session)
