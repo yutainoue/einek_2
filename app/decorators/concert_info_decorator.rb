@@ -11,8 +11,15 @@ module ConcertInfoDecorator
   end
 
   def performer_page_link
-    # fa_icon 'twitter'
     link_to(content_tag(:i, '', class: 'fa fa-external-link'), performer_url, target: '_blank')
-    # link_to(performer_url, target: '_blank')
+  end
+
+  def music_title
+    binding.pry
+    if music_titles.present?
+      music_titles
+    else
+      'HPよりご確認ください。'
+    end
   end
 end
