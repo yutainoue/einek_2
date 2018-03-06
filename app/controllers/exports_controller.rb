@@ -8,7 +8,7 @@ class ExportsController < ApplicationController
       end
 
       format.text do
-        send_data(Export.export_text(@concert_infos), type: 'text', filename: 'test.txt')
+        send_data(Export.new.export_text(@concert_infos), type: 'text', filename: 'test.txt')
       end
     end
   end

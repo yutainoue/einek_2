@@ -29,10 +29,10 @@ wb.add_worksheet(name: '演奏会一覧') do |sheet|
     sheet.rows[2 + row_count].cells[1].style = styles[:border]
     sheet.merge_cells sheet.rows[2 + row_count].cells[(0..1)]
 
-    ##楽団名
-    sheet.rows[3 + row_count].cells[0].value = '楽団名'
+    ##演奏者名
+    sheet.rows[3 + row_count].cells[0].value = '演奏者名'
     sheet.rows[3 + row_count].cells[0].style = styles[:border]
-    sheet.rows[3 + row_count].cells[1].value = concert_info.performer
+    sheet.rows[3 + row_count].cells[1].value = concert_info.performer.present? ? concert_info.performer : 'HPよりご確認ください。'
     sheet.rows[3 + row_count].cells[1].style = styles[:border]
 
     ##楽団HP
@@ -54,12 +54,12 @@ wb.add_worksheet(name: '演奏会一覧') do |sheet|
     sheet.rows[6 + row_count].cells[1].style = styles[:border]
 
     #下地となる空行を追加(演奏曲目のみ)
-    sheet.add_row Array.new(2, ''), :height => 12 * concert_info.music_titles.scan('<br>').length.next
+    sheet.add_row Array.new(2, ''), :height => 12 * concert_info.music_titles.scan("\n").length.next
 
     ##演奏曲目
     sheet.rows[7 + row_count].cells[0].value = '演奏曲目'
     sheet.rows[7 + row_count].cells[0].style = styles[:border]
-    sheet.rows[7 + row_count].cells[1].value = concert_info.music_titles.gsub(/<br>/, "\r\n")
+    sheet.rows[7 + row_count].cells[1].value = concert_info.music_titles.present? ? concert_info.music_titles : 'HPよりご確認ください。'
     sheet.rows[7 + row_count].cells[1].style = styles[:line_break]
 
     #下地となる空行を追加
