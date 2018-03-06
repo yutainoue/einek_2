@@ -35,15 +35,9 @@ class Scraping # 将来的には非同期でうごかせるようにする
     end
 
     puts 'Scraping Done'
-    # 先月のコンサート情報を削除する
-    # 将来的には別メソッドにしよう
-    old_concert = ConcertInfo.all.select { |x| x.tactdown_time < Time.now.beginning_of_month }
 
     begin
-      ConcertInfo.transaction do
-        # old_concert.each(&:destroy!)
-        ConcertInfo.import(concert_infos)
-      end
+      ConcertInfo.import(concert_infos)
     rescue => e
       log_error('コンサート情報の更新に失敗しました', e)
     end
