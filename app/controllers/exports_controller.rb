@@ -1,6 +1,6 @@
 class ExportsController < ApplicationController
   def show
-    @concert_infos = ConcertInfo.where(id: params[:concert_info_ids].to_a).order('tactdown_time ASC')
+    @concert_infos = ConcertInfo.unexpired.where(id: params[:concert_info_ids].to_a).order('tactdown_time ASC')
 
     respond_to do |format|
       format.xlsx do
