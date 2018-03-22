@@ -32,6 +32,7 @@ gem 'rubyzip', '>= 1.2.1'
 gem 'sanitize'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
+gem 'loofah', '~> 2.2.1'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
