@@ -1,6 +1,5 @@
 class HallMaster < ActiveHash::Base
   self.data = [
-    { id: 0, prefecture_id: 0, search_name: 'その他のホール', name: 'その他のホール' },
     { id: 1, prefecture_id: 1, search_name: '小樽市民,小樽市市民', name: '小樽市民会館' },
     { id: 2, prefecture_id: 1, search_name: '帯広市民、帯広市市民', name: '帯広市民文化ホール' },
     { id: 3, prefecture_id: 1, search_name: 'ルーテル', name: 'ザ・ルーテルホール' },
