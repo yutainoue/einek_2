@@ -1,38 +1,57 @@
-%h1 index
 = link_to 'スクレイピング', controller: 'concert_infos', action: 'new', data: { confirm: 'スクレイピングを開始しますか？' }
-= search_form_for @search, url: { action: :index } do |f|
-  %div
-    = f.label :hall_prefecture_number_eq, '地域'
-    = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
-    %span.hall_names
-      = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
-    = f.label :tactdown_time_cont, '開催月'
-    = f.date_field :tactdown_time_gteq
-    = f.date_field :tactdown_time_lteq_end_of_day
-    = f.submit '検索'
-  %div
-    - ids = @concert_infos.pluck(:id)
-    = link_to_if ids.present?, '検索結果をExcelにしてダウンロード', export_path(format: :xlsx, concert_info_ids: ids)
-  %div
-    = link_to_if ids.present?, '検索結果をメール用文章にしてダウンロード', export_path(format: :text, concert_info_ids: ids)
-%table.table.table-no-border
-  %tr
-    %th 演奏会名
-    %th ホール名
-    %th 日程
-    %th 曲目
-    %th ＨＰ
-  - @concert_infos.each do |concert|
+
+%div.container-fluid.text-center
+  %h1 アイネク
+  %h3 挟み込みリスト自動作成サービス
+
+%div.container
+  %div.row
+    %div.col-xs-5
+      %h2.text-center
+        検索する
+      = search_form_for @search, url: { action: :index } do |f|
+        %div
+          = f.label :hall_prefecture_number_eq, '地域'
+          = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
+        %div.hall_names
+          = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
+        %div
+          = f.label :tactdown_time_cont, '開催月'
+          = f.date_field :tactdown_time_gteq
+          %span ~
+          = f.date_field :tactdown_time_lteq_end_of_day
+        = f.submit '検索'
+    %div.col-xs-2.text-center.hidden-xs.hidden-sm
+      %p →
+    %div.col-xs-5
+      - ids = @concert_infos.pluck(:id)
+      %h2.text-center
+        リストにする
+      %ul
+        %li
+          = link_to_if ids.present?, '印刷用フォーマットに加工してダウンロード(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
+        %li
+          = link_to_if ids.present?, 'メール用文章に加工してダウンロード', export_path(format: :text, concert_info_ids: ids)
+
+%div.container-fluid
+  %table.table.table-no-border
     %tr
-      %td.concert_info_title
-        = simple_format(concert.title)
-      %td.concert_info_hall
-        = concert.hall
-        %br
-        = "#{concert.hall_prefecture} #{concert.hall_ward}"
-      %td.concert_info_schedule
-        = simple_format(concert.schedule)
-      %td.concert_info_music_title
-        = simple_format(concert.music_title)
-      %td.concert_info_link
-        = concert.performer_page_link
+      %th 演奏会名
+      %th ホール名
+      %th 日程
+      %th 曲目
+      %th ＨＰ
+    - @concert_infos.each do |concert|
+      %tr
+        %td.concert_info_title
+          = simple_format(concert.title)
+        %td.concert_info_hall
+          = concert.hall
+          %br
+          = "#{concert.hall_prefecture} #{concert.hall_ward}"
+        %td.concert_info_schedule
+          = simple_format(concert.schedule)
+        %td.concert_info_music_title
+          = simple_format(concert.music_title)
+        %td.concert_info_link
+          = concert.performer_page_link
