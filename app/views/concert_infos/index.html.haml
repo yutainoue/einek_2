@@ -6,23 +6,35 @@
 
 %div.container
   %div.row
-    %div.col-xs-5
-      %h2.text-center
-        検索する
+    %div.col-xs-5.panel
       = search_form_for @search, url: { action: :index } do |f|
-        %div
-          = f.label :hall_prefecture_number_eq, '地域'
-          = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
-        %div.hall_names
-          = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
-        %div
-          = f.label :tactdown_time_cont, '開催月'
-          = f.date_field :tactdown_time_gteq
-          %span ~
-          = f.date_field :tactdown_time_lteq_end_of_day
-        = f.submit '検索'
+        %div.panel-default
+          %div.panel-heading
+            %h2.text-center
+              検索する
+          %table.table
+            %tbody
+              %tr
+                %td
+                  = f.label :hall_prefecture_number_eq, '地域'
+                %td
+                  = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
+              %tr.hall_names
+                = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
+              %tr
+                %td
+                  = f.label :tactdown_time_cont, '開催月'
+                %td
+                  = f.date_field :tactdown_time_gteq
+                  %span ~
+                  = f.date_field :tactdown_time_lteq_end_of_day
+        %div.panel-footer
+          %div.text-center
+          = f.submit '検索'
+
     %div.col-xs-2.text-center.hidden-xs.hidden-sm
       %p →
+
     %div.col-xs-5
       - ids = @concert_infos.pluck(:id)
       %h2.text-center

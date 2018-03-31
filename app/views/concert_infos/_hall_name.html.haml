@@ -1,3 +1,5 @@
 = search_form_for search, url: { action: :index } do |f|
-  = f.label :hall_number_eq, 'ホール名'
-  = f.collection_select :hall_number_eq, hall_names(prefecture_id), :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
+  %td
+    = f.label :hall_number_eq, 'ホール名'
+  %td
+    = f.collection_select :hall_number_eq, hall_names(prefecture_id), :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
