@@ -11,7 +11,7 @@ module ConcertInfoDecorator
   end
 
   def performer_page_link
-    link_to(content_tag(:i, '', class: 'fa fa-external-link'), performer_url, target: '_blank')
+    link_to(content_tag(:i, ' 楽団HP', class: 'fa fa-external-link'), performer_url, target: '_blank')
   end
 
   def music_title

@@ -10,10 +10,12 @@ $(document).on 'change', '#q_hall_prefecture_number_eq', ->
     $('.chosen-select').chosen(
       no_results_text: '一致するものがありません:'
       search_contains: true
+      width: 100
     )
 
 $ ->
   $('.chosen-select').chosen(
     no_results_text: '一致するものがありません:'
     search_contains: true
+    width: 100
   )

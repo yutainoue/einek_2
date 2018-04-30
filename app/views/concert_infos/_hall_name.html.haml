@@ -1,5 +1,4 @@
 = search_form_for search, url: { action: :index } do |f|
-  %td
-    = f.label :hall_number_eq, 'ホール名'
-  %td
-    = f.collection_select :hall_number_eq, hall_names(prefecture_id), :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
+  = f.label :hall_number_eq, '施設：'
+  -# モーダル内のchosenの初期表示幅が、include_blankの文字数になるため全角スペースで幅を稼いでいる
+  = f.collection_select :hall_number_eq, hall_names(prefecture_id), :id, :name, { include_blank: '全て　　　　　　　　　　　　　　　' }, { class: 'chosen-select' }
