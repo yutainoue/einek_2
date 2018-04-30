@@ -1,49 +1,61 @@
 :coffee
-  $(document).on 'click', '.xxx', ->
+  $(document).on 'click', '.aaa', ->
     $('#a-modal').modal 'show'
+  $(document).on 'click', '.bbb', ->
+    $('#b-modal').modal 'show'
 
 = link_to 'スクレイピング', controller: 'concert_infos', action: 'new', data: { confirm: 'スクレイピングを開始しますか？' }
 
 %div.container.text-center
-  %h1.xxx アイネク
-  %p 挟み込みリスト自動作成サービス
+  %h1
+    %strong アイネク
+  %p アマチュアオーケストラ用の挟み込みリストを簡単に作成することができます。
 
-%a.btn.btn-primary.btn-lg.xxx
-  検索する
+%div.container.text-center
+  %a.btn.btn-primary.btn-lg.aaa
+    条件を指定して演奏会を絞り込む
+  %a.btn.btn-success.btn-lg.bbb
+    絞り込み結果をファイルにして保存
 
-#a-modal.modal.fade
-  %div.modal-dialog
-    %div.modal-content
-      %div.modal-header
-        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-        %h3#modal_label 検索する
-      %div.modal-body
-        = search_form_for @search, url: { action: :index }, class: 'form-horizontal' do |f|
-          = f.label :hall_prefecture_number_eq, '地域：'
-          = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: '全て' }, { class: 'chosen-select' }
+= search_form_for @search, url: { action: :index }, class: 'form-horizontal' do |f|
+  #a-modal.modal.fade
+    %div.modal-dialog
+      %div.modal-content
+        %div.modal-header.text-center
+          %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} ×
+          %h3#modal_label 条件を指定して絞り込む
+        %div.modal-body
+          = f.label :hall_prefecture_number_eq, '　　地域を選ぶ：', class: 'modal_a_left_margin'
+          = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: '全ての都道府県' }, { class: 'chosen-select' }
           %div.hall_names
             = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
-          = f.label :tactdown_time_cont, '期間：'
+          = f.label :tactdown_time_cont, '期間を指定する：', class: 'modal_a_left_margin'
           = f.date_field :tactdown_time_gteq
           %span ~
           = f.date_field :tactdown_time_lteq_end_of_day
-          %div
-            = f.submit 'この条件で検索', class: 'btn btn-default center-block search_confirm_button'
+        %div.modal-footer
+          = f.submit 'この条件で検索', class: 'btn btn-primary'
+          %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
-    -# %div.col-md-6.col-sm-6.col-xs-6.container_min_width
-    -#   %div.panel.panel-default
-    -#     - ids = @concert_infos.pluck(:id)
-    -#     %div.panel-heading
-    -#       Step2.リストにしてダウンロード
-    -#     %div.panel-body
-    -#       %ul.list-group
-    -#         %li.list-group-item
-    -#           = link_to_if ids.present?, '印刷用フォーマットに加工してダウンロード(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
-    -#         %li.list-group-item
-    -#           = link_to_if ids.present?, 'メール用文章に加工してダウンロード', export_path(format: :text, concert_info_ids: ids)
+#b-modal.modal.fade
+  %div.modal-dialog
+    %div.modal-content
+      - ids = @concert_infos.pluck(:id)
+      %div.modal-header.text-center
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+        %h3#modal_label 絞り込み結果をファイルにして保存
+      %div.modal-body.text-center
+        %ul.list-group
+          %li.list-group-item
+            = link_to_if ids.present?, '印刷用フォーマットに加工してダウンロード(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
+          %li.list-group-item
+            = link_to_if ids.present?, 'メール用文章に加工してダウンロード', export_path(format: :text, concert_info_ids: ids)
+      %div.modal-footer
+        %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
-%div.container-fluid
-  %table.table.table-no-border
+
+%div.container-fluid.table_background
+  %table.table.table-hover
     %tr
       %th 演奏会名
       %th ホール名
@@ -55,9 +67,7 @@
         %td.concert_info_title
           = simple_format(concert.title)
         %td.concert_info_hall
-          = concert.hall
-          %br
-          = "#{concert.hall_prefecture} #{concert.hall_ward}"
+          = simple_format(concert.hall_region)
         %td.concert_info_schedule
           = simple_format(concert.schedule)
         %td.concert_info_music_title

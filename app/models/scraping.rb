@@ -64,7 +64,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
 
   def concert_info_urls(session)
     concert_info_urls = []
-    urls = [#{}"http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}",
+    urls = ["http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}",
             "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
 
     urls.each do |url|
