@@ -7,15 +7,17 @@
 = link_to 'スクレイピング', controller: 'concert_infos', action: 'new', data: { confirm: 'スクレイピングを開始しますか？' }
 
 %div.container.text-center.font_white
-  %h1
+  %h1.title_font_size.title_margin
     %strong アイネク
-  %h3 アマチュアオーケストラ用の挟み込みリストを簡単に作成することができます。
+  %h2 オーケストラ用の挟み込みリストを簡単に作成することができます。
 
-%div.container.text-center
+%div.container.text-center.button_mergin
   %a.btn.btn-info.btn-lg.aaa
-    条件を指定して演奏会を絞り込む
+    .button_font_size
+      条件を指定して演奏会を絞り込む
   %a.btn.btn-success.btn-lg.bbb
-    絞り込み結果をファイルにして保存
+    .button_font_size
+      絞り込み結果をファイルにして保存
 
 = search_form_for @search, url: { action: :index }, class: 'form-horizontal' do |f|
   #a-modal.modal.fade
@@ -53,8 +55,8 @@
       %div.modal-footer.bg-success
         %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
-%div.container-fluid.table_background.table_mergin
-  %table.table.font_white
+%div.container-fluid.table_background.table_font_size
+  %table.table
     %thead.thead_background
       %tr
         %th 演奏会名

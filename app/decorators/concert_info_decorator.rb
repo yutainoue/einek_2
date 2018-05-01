@@ -16,7 +16,7 @@ module ConcertInfoDecorator
 
   def performer_page_link
     #アイコンとの間に余白がほしいから、半角スペース入れている
-    link_to(content_tag(:i, ' 楽団HP', class: 'fa fa-external-link font_white'), performer_url, target: '_blank')
+    link_to(content_tag(:i, ' 楽団HP', class: 'fa fa-external-link'), performer_url, target: '_blank')
   end
 
   def music_title
