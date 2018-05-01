@@ -6,13 +6,13 @@
 
 = link_to 'スクレイピング', controller: 'concert_infos', action: 'new', data: { confirm: 'スクレイピングを開始しますか？' }
 
-%div.container.text-center
+%div.container.text-center.font_white
   %h1
     %strong アイネク
-  %p アマチュアオーケストラ用の挟み込みリストを簡単に作成することができます。
+  %h3 アマチュアオーケストラ用の挟み込みリストを簡単に作成することができます。
 
 %div.container.text-center
-  %a.btn.btn-primary.btn-lg.aaa
+  %a.btn.btn-info.btn-lg.aaa
     条件を指定して演奏会を絞り込む
   %a.btn.btn-success.btn-lg.bbb
     絞り込み結果をファイルにして保存
@@ -21,9 +21,9 @@
   #a-modal.modal.fade
     %div.modal-dialog
       %div.modal-content
-        %div.modal-header.text-center
+        %div.modal-header.text-center.bg-info
           %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} ×
-          %h3#modal_label 条件を指定して絞り込む
+          %h3#modal_label 検索条件を設定してください。
         %div.modal-body
           = f.label :hall_prefecture_number_eq, '　　地域を選ぶ：', class: 'modal_a_left_margin'
           = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: '全ての都道府県' }, { class: 'chosen-select' }
@@ -31,9 +31,9 @@
             = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
           = f.label :tactdown_time_cont, '期間を指定する：', class: 'modal_a_left_margin'
           = f.date_field :tactdown_time_gteq
-          %span ~
+          %span 　〜　
           = f.date_field :tactdown_time_lteq_end_of_day
-        %div.modal-footer
+        %div.modal-footer.bg-info
           = f.submit 'この条件で検索', class: 'btn btn-primary'
           %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
@@ -41,36 +41,37 @@
   %div.modal-dialog
     %div.modal-content
       - ids = @concert_infos.pluck(:id)
-      %div.modal-header.text-center
+      %div.modal-header.text-center.bg-success
         %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-        %h3#modal_label 絞り込み結果をファイルにして保存
+        %h3#modal_label 保存形式を選んでください。
       %div.modal-body.text-center
         %ul.list-group
           %li.list-group-item
             = link_to_if ids.present?, '印刷用フォーマットに加工してダウンロード(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
           %li.list-group-item
             = link_to_if ids.present?, 'メール用文章に加工してダウンロード', export_path(format: :text, concert_info_ids: ids)
-      %div.modal-footer
+      %div.modal-footer.bg-success
         %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
-
-%div.container-fluid.table_background
-  %table.table.table-hover
-    %tr
-      %th 演奏会名
-      %th ホール名
-      %th 日程
-      %th 曲目
-      %th ＨＰ
-    - @concert_infos.each do |concert|
+%div.container-fluid.table_background.table_mergin
+  %table.table.font_white
+    %thead.thead_background
       %tr
-        %td.concert_info_title
-          = simple_format(concert.title)
-        %td.concert_info_hall
-          = simple_format(concert.hall_region)
-        %td.concert_info_schedule
-          = simple_format(concert.schedule)
-        %td.concert_info_music_title
-          = simple_format(concert.music_title)
-        %td.concert_info_link
-          = concert.performer_page_link
+        %th 演奏会名
+        %th ホール名
+        %th 日程
+        %th 曲目
+        %th ＨＰ
+    - @concert_infos.each do |concert|
+      %tbody.tbody_background
+        %tr
+          %td.concert_info_title
+            = simple_format(concert.title)
+          %td.concert_info_hall
+            = simple_format(concert.hall_region)
+          %td.concert_info_schedule
+            = simple_format(concert.schedule)
+          %td.concert_info_music_title
+            = simple_format(concert.music_title)
+          %td.concert_info_link
+            = concert.performer_page_link
