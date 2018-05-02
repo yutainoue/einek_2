@@ -1,8 +1,12 @@
 :coffee
   $(document).on 'click', '.aaa', ->
     $('#a-modal').modal 'show'
+    $('#q_hall_prefecture_number_eq_chosen > div > div > input[type="text"]').attr('placeholder','名前を入力して検索')
+    $('#q_hall_number_eq_chosen > div > div > input[type="text"]').attr('placeholder','名前を入力して検索')
+
   $(document).on 'click', '.bbb', ->
     $('#b-modal').modal 'show'
+
   jQuery ->
     jQuery(window).scroll ->
       obj_t_pos = jQuery('#scroll_target').offset().top
@@ -40,12 +44,12 @@
           %h3#modal_label 検索条件を設定してください。
         %div.modal-body
           = f.label :hall_prefecture_number_eq, '　　地域を選ぶ：', class: 'modal_a_left_margin'
-          = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: '全ての都道府県' }, { class: 'chosen-select' }
+          = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: '全ての都道府県　　　　' }, { class: 'chosen-select' }
           %div.hall_names
             = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
           = f.label :tactdown_time_cont, '期間を指定する：', class: 'modal_a_left_margin'
           = f.date_field :tactdown_time_gteq
-          %span 　〜　
+          %span 〜
           = f.date_field :tactdown_time_lteq_end_of_day
         %div.modal-footer.bg-info
           = f.submit 'この条件で検索', class: 'btn btn-primary'
