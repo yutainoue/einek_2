@@ -13,17 +13,14 @@
 .concert_info_link
   width: 50px
 
-.container_min_width
-  min-width: 500px
-
-.modal_a_left_margin
-  margin-left: 70px
-
 .title_margin
   margin-top: 0
 
 .button_mergin
   margin: 15px 0 25px 0
+
+.modal_a_left_margin
+  margin-left: 70px
 
 .tbody_background
   background-color: rgba(250,250,250,0.65)
@@ -44,6 +41,17 @@
 
 .button_font_size
   font-size: 1.3em
+
+/* affixの横幅・位置がずれないようにする */
+.affix
+  width: 100%
+  position: fixed !important
+  top: 0
+  margin-bottom: 400px !important
+
+/* theadをaffixにしたため、隙間が開かないようデフォルトのmargin-bottomを0にする */
+.non_margin_bottom
+  margin-bottom: 0 !important
 
 body
   /* 画像ファイルの指定 */

@@ -55,15 +55,18 @@
       %div.modal-footer.bg-success
         %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
-%div.container-fluid.table_background.table_font_size
-  %table.table
+%div.container-fluid.table_font_size{ 'data-spy' => 'affix', 'data-offset-top' => '300', id: 'affix_container' }
+  %table.table.non_margin_bottom
     %thead.thead_background
       %tr
-        %th 演奏会名
-        %th ホール名
-        %th 日程
-        %th 曲目
-        %th ＨＰ
+        %th.concert_info_title 演奏会名
+        %th.concert_info_hall ホール名
+        %th.concert_info_schedule 日程
+        %th.concert_info_music_title 曲目
+        %th.concert_info_link ＨＰ
+
+%div.container-fluid.table_font_size
+  %table.table
     - @concert_infos.each do |concert|
       %tbody.tbody_background
         %tr
