@@ -65,9 +65,11 @@
       %div.modal-body.text-center
         %ul.list-group
           %li.list-group-item
+            = link_to_if ids.present?, '演奏会一覧をそのままダウンロード(Csv)', export_path(format: :csv, concert_info_ids: ids)
+          %li.list-group-item
             = link_to_if ids.present?, '印刷用フォーマットに加工してダウンロード(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
           %li.list-group-item
-            = link_to_if ids.present?, 'メール用文章に加工してダウンロード', export_path(format: :text, concert_info_ids: ids)
+            = link_to_if ids.present?, 'メール用文章に加工してダウンロード(Text)', export_path(format: :text, concert_info_ids: ids)
       %div.modal-footer.bg-success
         %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
