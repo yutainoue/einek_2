@@ -3,6 +3,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
   include LogOutput
   require 'capybara'
   require 'capybara/poltergeist'
+  require 'set'
 
   def concert_info
     session = capybara_init
@@ -34,7 +35,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
       end
     end
 
-    puts 'Scraping Done'
+    puts 'スクレイピングが終了しました'
 
     begin
       ConcertInfo.import(concert_infos)
@@ -47,10 +48,10 @@ class Scraping # 将来的には非同期でうごかせるようにする
 
   def new_urls(session)
     session    = capybara_init
-    all_urls   = concert_info_urls(session)
-    all_urls   = all_urls[0..100] # 実装中に大量スクレイピングしないように仮実装
-    exist_urls = ConcertInfo.pluck(:page_url)
-    new_urls   = all_urls.select { |url| exist_urls.exclude?(url) }
+    # all_urls   = Set.new(concert_info_urls(session))
+    all_urls   = Set.new(concert_info_urls(session)[0...100]) # 実装中に大量スクレイピングしないように仮実装
+    exist_urls = Set.new(ConcertInfo.pluck(:page_url))
+    new_urls   = all_urls - exist_urls
     new_urls
   end
 
