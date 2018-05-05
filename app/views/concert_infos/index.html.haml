@@ -1,31 +1,9 @@
-:coffee
-  $(document).on 'click', '.aaa', ->
-    $('#a-modal').modal 'show'
-    $('#q_hall_prefecture_number_eq_chosen > div > div > input[type="text"]').attr('placeholder','名前を入力して検索')
-    $('#q_hall_number_eq_chosen > div > div > input[type="text"]').attr('placeholder','名前を入力して検索')
-
-  $(document).on 'click', '.bbb', ->
-    $('#b-modal').modal 'show'
-
-  jQuery ->
-    jQuery(window).scroll ->
-      obj_t_pos = jQuery('#scroll_target').offset().top
-      scr_count = jQuery(document).scrollTop()
-      if scr_count > obj_t_pos
-        $('#concert_info_tbody').addClass 'tbody_margin'
-        $('#affix_target').addClass 'affix'
-        $('#affix_target').removeClass 'affix_top'
-      else
-        $('#concert_info_tbody').removeClass 'tbody_margin'
-        $('#affix_target').removeClass 'affix'
-        $('#affix_target').addClass 'affix_top'
-
 = link_to 'スクレイピング', controller: 'concert_infos', action: 'new', data: { confirm: 'スクレイピングを開始しますか？' }
 
 %div.container.text-center.font_white
   %h1.title_font_size.title_margin
     %strong アイネク
-  %h2 オーケストラ用の挟み込みリストを簡単に作成することができます。
+  %h3 オーケストラ用の挟み込みリストを閲覧・作成することができます。
 
 %div.container.text-center.button_margin
   %a.btn.btn-info.btn-lg.aaa
@@ -33,7 +11,7 @@
       条件を指定して演奏会を絞り込む
   %a.btn.btn-success.btn-lg.bbb
     .button_font_size
-      絞り込み結果をファイルにして保存
+      表示された演奏会情報をファイルに保存
 
 = search_form_for @search, url: { action: :index }, class: 'form-horizontal' do |f|
   #a-modal.modal.fade
@@ -65,11 +43,11 @@
       %div.modal-body.text-center
         %ul.list-group
           %li.list-group-item
-            = link_to_if ids.present?, '演奏会一覧をそのままダウンロード(Csv)', export_path(format: :csv, concert_info_ids: ids)
+            = link_to_if ids.present?, '演奏会情報をそのまま保存する(Csv)', export_path(format: :csv, concert_info_ids: ids)
           %li.list-group-item
-            = link_to_if ids.present?, '印刷用フォーマットに加工してダウンロード(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
+            = link_to_if ids.present?, '印刷用フォーマットに加工して保存する(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
           %li.list-group-item
-            = link_to_if ids.present?, 'メール用文章に加工してダウンロード(Text)', export_path(format: :text, concert_info_ids: ids)
+            = link_to_if ids.present?, 'メール用文章に加工して保存する(Text)', export_path(format: :text, concert_info_ids: ids)
       %div.modal-footer.bg-success
         %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
