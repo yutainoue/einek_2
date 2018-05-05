@@ -1,41 +1,80 @@
-%h1 index
 = link_to 'スクレイピング', controller: 'concert_infos', action: 'new', data: { confirm: 'スクレイピングを開始しますか？' }
-= search_form_for @search, url: { action: :index } do |f|
-  %div
-    = f.label :hall_prefecture_number_eq, '地域'
-    = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: 'すべて' }, { class: 'chosen-select' }
-    %span.hall_names
-      = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
-    = f.label :tactdown_time_cont, '開催月'
-    = f.date_field :tactdown_time_gteq
-    = f.date_field :tactdown_time_lteq_end_of_day
-    = f.submit '検索'
-  %div
-    = link_to '検索結果をExcelにしてダウンロード', export_path(format: :xlsx, concert_info_ids: @concert_infos.pluck(:id))
-  %div
-    = link_to '検索結果をメール用文章にしてダウンロード', export_path(format: :text, concert_info_ids: @concert_infos.pluck(:id))
-%table.table.table-no-border
-  %tr
-    %th 演奏会名
-    %th ホール名
-    %th 開演日程
-    %th 曲目
-    %th リンク
-  - @concert_infos.each do |concert|
-    %tr
-      %td
-        = "【#{concert.performer}】"
-        %br
-        = concert.concert
-      %td
-        = concert.hall
-        %br
-        = "#{concert.hall_prefecture} #{concert.hall_ward}"
-      %td
-        = concert.opening_time
-        %br
-        = concert.tactdown_time
-      %td
-        = concert.music_titles.html_safe
-      %td
-        = link_to('楽団サイト', concert.performer_url, target: '_blank')
+
+%div.container.text-center.font_white
+  %h1.title_font_size.title_margin
+    %strong アイネク
+  %h3 オーケストラ用の挟み込みリストを閲覧・作成することができます。
+
+%div.container.text-center.button_margin
+  %a.btn.btn-info.btn-lg.aaa
+    .button_font_size
+      条件を指定して演奏会を絞り込む
+  - display_permission = @concert_infos.blank? ? 'disabled' : ''
+  %a.btn.btn-success.btn-lg.bbb{ class: "#{display_permission}" }
+    .button_font_size
+      表示中の演奏会情報をファイルに保存
+
+= search_form_for @search, url: { action: :index }, class: 'form-horizontal' do |f|
+  #a-modal.modal.fade
+    %div.modal-dialog
+      %div.modal-content
+        %div.modal-header.text-center.bg-info
+          %button.close{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} ×
+          %h3#modal_label 検索条件を設定してください。
+        %div.modal-body
+          = f.label :hall_prefecture_number_eq, '　　地域を選ぶ：', class: 'modal_a_left_margin'
+          = f.collection_select :hall_prefecture_number_eq, PrefectureMaster.all, :id, :name, { include_blank: '全ての都道府県　　　　' }, { class: 'chosen-select' }
+          %div.hall_names
+            = render partial: 'hall_name', locals: { search: @search, prefecture_id: @prefecture_id }
+          = f.label :tactdown_time_cont, '期間を指定する：', class: 'modal_a_left_margin'
+          = f.date_field :tactdown_time_gteq
+          %span 〜
+          = f.date_field :tactdown_time_lteq_end_of_day
+        %div.modal-footer.bg-info
+          = f.submit 'この条件で検索', class: 'btn btn-primary'
+          %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
+
+#b-modal.modal.fade
+  %div.modal-dialog
+    %div.modal-content
+      - ids = @concert_infos.pluck(:id)
+      %div.modal-header.text-center.bg-success
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+        %h3#modal_label 保存形式を選んでください。
+      %div.modal-body.text-center
+        %ul.list-group
+          %li.list-group-item
+            = link_to '演奏会情報をそのまま保存する(Csv)', export_path(format: :csv, concert_info_ids: ids)
+          %li.list-group-item
+            = link_to '印刷用フォーマットに加工して保存する(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
+          %li.list-group-item
+            = link_to 'メール用文章に加工して保存する(Text)', export_path(format: :text, concert_info_ids: ids)
+      %div.modal-footer.bg-success
+        %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
+
+%div{ id: 'scroll_target' }
+  %div.container-fluid.table_font_size.affix_top{ id: 'affix_target' }
+    %table.table.non_margin_bottom
+      %thead.thead_background
+        %tr
+          %th.concert_info_title 演奏会名
+          %th.concert_info_hall ホール名
+          %th.concert_info_schedule 日程
+          %th.concert_info_music_title 曲目
+          %th.concert_info_link ＨＰ
+
+%div.container-fluid.table_font_size
+  %table.table{ id: 'concert_info_tbody' }
+    - @concert_infos.each do |concert|
+      %tbody.tbody_background
+        %tr
+          %td.concert_info_title
+            = simple_format(concert.title)
+          %td.concert_info_hall
+            = simple_format(concert.hall_region)
+          %td.concert_info_schedule
+            = simple_format(concert.schedule)
+          %td.concert_info_music_title
+            = simple_format(concert.music_title)
+          %td.concert_info_link
+            = concert.performer_page_link
