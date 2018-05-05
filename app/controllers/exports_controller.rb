@@ -8,11 +8,11 @@ class ExportsController < ApplicationController
       end
 
       format.xlsx do
-        response.headers['Content-Disposition'] = 'attachment; filename="挟み込みリスト.xlsx"'
+        response.headers['Content-Disposition'] = 'attachment; filename="挟み込みリスト(印刷用).xlsx"'
       end
 
       format.text do
-        send_data(Export.new.export_text(@concert_infos), type: 'text', filename: '挟み込みリスト.txt')
+        send_data(Export.new.export_text(@concert_infos), type: 'text', filename: '挟み込みリスト(メール用文章).txt')
       end
     end
   end

@@ -9,9 +9,10 @@
   %a.btn.btn-info.btn-lg.aaa
     .button_font_size
       条件を指定して演奏会を絞り込む
-  %a.btn.btn-success.btn-lg.bbb
+  - display_permission = @concert_infos.blank? ? 'disabled' : ''
+  %a.btn.btn-success.btn-lg.bbb{ class: "#{display_permission}" }
     .button_font_size
-      表示された演奏会情報をファイルに保存
+      表示中の演奏会情報をファイルに保存
 
 = search_form_for @search, url: { action: :index }, class: 'form-horizontal' do |f|
   #a-modal.modal.fade
@@ -43,11 +44,11 @@
       %div.modal-body.text-center
         %ul.list-group
           %li.list-group-item
-            = link_to_if ids.present?, '演奏会情報をそのまま保存する(Csv)', export_path(format: :csv, concert_info_ids: ids)
+            = link_to '演奏会情報をそのまま保存する(Csv)', export_path(format: :csv, concert_info_ids: ids)
           %li.list-group-item
-            = link_to_if ids.present?, '印刷用フォーマットに加工して保存する(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
+            = link_to '印刷用フォーマットに加工して保存する(Excel)', export_path(format: :xlsx, concert_info_ids: ids)
           %li.list-group-item
-            = link_to_if ids.present?, 'メール用文章に加工して保存する(Text)', export_path(format: :text, concert_info_ids: ids)
+            = link_to 'メール用文章に加工して保存する(Text)', export_path(format: :text, concert_info_ids: ids)
       %div.modal-footer.bg-success
         %button.btn.btn-default{'aria-hidden' => 'true', 'data-dismiss' => 'modal', :type => 'button'} 閉じる
 
