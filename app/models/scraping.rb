@@ -20,15 +20,20 @@ class Scraping # 将来的には非同期でうごかせるようにする
           puts "url:#{url}"
           sleep 2 # 怒られないように2秒待つ
 
-          page         = html_parth(url, session)
+          page = html_parth(url, session)
+
+          # プロオケだったら挟み込みできないので飛ばす
+          next if pro_performer?(page)
+
           concert_info = ConcertInfo.new(parth_concert_info(page, url))
+
+          # 楽団URLがないものは挟み込みの連絡できないため飛ばす
+          next unless concert_info.performer_url.start_with?('http')
+
           hall_prefecture_number_set(concert_info)
           hall_number_set(concert_info)
 
-          # 楽団URLがないものは挟み込みの連絡できないため必要ない
-          if concert_info.performer_url.start_with?('http')
-            concert_infos << concert_info
-          end
+          concert_infos << concert_info
         rescue => e
           log_warn('コンサート情報ページのスクレイピングに失敗しました', e)
         end
@@ -76,6 +81,21 @@ class Scraping # 将来的には非同期でうごかせるようにする
     end
 
     concert_info_urls
+  end
+
+  def pro_performer?(page)
+    src_name = page.search('.colRight/img').first.attributes['src'].value
+
+    # ico_okeGAKUDAN001.gif = プロオケ
+    # ico_okeGAKUDAN002.gif = プロアンサンブル
+    # ico_okeGAKUDAN003.gif = プロス吹奏
+    # ico_okeGAKUDAN004.gif = プロビックバンド
+    # ico_okeGAKUDAN005.gif = プロ独奏
+    # ico_okeGAKUDAN006.gif = プロ声楽
+    # ico_okeGAKUDAN007.gif = プロ合唱
+    # ico_okeGAKUDAN008.gif = プロオペラ
+    # ico_okeGAKUDAN009.gif = プロ舞台
+    src_name.match(/001|002|003|004|005|006|007|008|009/)
   end
 
   def parth_concert_info(page, url)
