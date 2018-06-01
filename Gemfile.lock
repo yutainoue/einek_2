@@ -108,6 +108,7 @@ GEM
     compass-rails (2.0.1)
       compass (~> 1.0.0)
     concurrent-ruby (1.0.5)
+    connection_pool (2.2.2)
     crass (1.0.4)
     database_cleaner (1.7.0)
     diff-lcs (1.3)
@@ -117,6 +118,8 @@ GEM
       html2haml
     erubi (1.7.1)
     erubis (2.7.0)
+    et-orbi (1.1.2)
+      tzinfo
     execjs (2.7.0)
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
@@ -129,6 +132,9 @@ GEM
     font-awesome-rails (4.7.0.4)
       railties (>= 3.2, < 6.0)
     formatador (0.2.5)
+    fugit (1.1.1)
+      et-orbi (~> 1.1, >= 1.1.1)
+      raabro (~> 1.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     guard (2.14.2)
@@ -203,6 +209,7 @@ GEM
     momentjs-rails (2.20.1)
       railties (>= 3.1)
     multi_json (1.13.1)
+    mustermann (1.0.2)
     mysql2 (0.3.21)
     nenv (0.3.0)
     net-http-digest_auth (1.4.1)
@@ -235,7 +242,10 @@ GEM
       pry (>= 0.10.4)
     public_suffix (3.0.2)
     puma (3.11.4)
+    raabro (1.1.5)
     rack (2.0.5)
+    rack-protection (2.0.1)
+      rack
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails (5.1.4)
@@ -275,6 +285,9 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    redis (4.0.1)
+    redis-namespace (1.6.0)
+      redis (>= 3.0.4)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -300,6 +313,8 @@ GEM
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
     rubyzip (1.2.1)
+    rufus-scheduler (3.5.0)
+      fugit (~> 1.1, >= 1.1.1)
     sanitize (4.6.4)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
@@ -321,6 +336,21 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
+    sidekiq (5.1.3)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
+    sidekiq-scheduler (2.2.2)
+      redis (>= 3, < 5)
+      rufus-scheduler (~> 3.2)
+      sidekiq (>= 3)
+      tilt (>= 1.4.0)
+    sinatra (2.0.1)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.1)
+      tilt (~> 2.0)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-commands-rspec (1.0.4)
@@ -400,6 +430,7 @@ DEPENDENCIES
   rails (= 5.1.4)
   rails-controller-testing
   ransack
+  redis-namespace
   rspec-rails
   rubyzip (>= 1.2.1)
   sanitize
@@ -407,6 +438,9 @@ DEPENDENCIES
   seed-fu
   selenium-webdriver
   shoulda-matchers
+  sidekiq
+  sidekiq-scheduler
+  sinatra
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
