@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'active_decorator'
 gem 'active_hash'
 gem 'activerecord-import'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
@@ -22,17 +23,22 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'mechanize'
 gem 'momentjs-rails', '>= 2.9.0'
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.20'
 gem 'poltergeist'
 gem 'puma', '~> 3.7'
 gem 'rails', '5.1.4'
 gem 'ransack'
 gem 'rubyzip', '>= 1.2.1'
+gem 'sanitize'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
+gem 'loofah', '~> 2.2.1'
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'redis-namespace'
+gem 'sidekiq-scheduler'
 
 group :development, :test do
-  gem 'xray-rails'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'guard-rspec'
@@ -42,6 +48,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'seed-fu'
   gem 'spring-commands-rspec'
+  gem 'xray-rails'
 end
 
 group :development do

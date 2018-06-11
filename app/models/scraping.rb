@@ -3,41 +3,47 @@ class Scraping # 将来的には非同期でうごかせるようにする
   include LogOutput
   require 'capybara'
   require 'capybara/poltergeist'
+  require 'set'
 
   def concert_info
     session = capybara_init
     concert_infos = []
+    concert_urls = new_urls(session)
+    urls_count = concert_urls.count
 
-    new_urls(session).each_slice(20) do |urls|
-      puts '====='
+    concert_urls.each_slice(20) do |urls|
+      urls_count -= 20
+      puts '=============================='
+      puts "残り：#{urls_count}"
       urls.each do |url|
         begin
           puts "url:#{url}"
           sleep 2 # 怒られないように2秒待つ
 
-          page         = html_parth(url, session)
+          page = html_parth(url, session)
+
+          # プロオケだったら挟み込みできないので飛ばす
+          next if pro_performer?(page)
+
           concert_info = ConcertInfo.new(parth_concert_info(page, url))
+
+          # 楽団URLがないものは挟み込みの連絡できないため飛ばす
+          next unless concert_info.performer_url.start_with?('http')
+
           hall_prefecture_number_set(concert_info)
           hall_number_set(concert_info)
 
-          # 楽団URLがないものは挟み込みの連絡できないため必要ない
-          concert_infos << concert_info if concert_info.performer_url.present?
+          concert_infos << concert_info
         rescue => e
           log_warn('コンサート情報ページのスクレイピングに失敗しました', e)
         end
       end
     end
 
-    puts 'Scraping Done'
-    # 先月のコンサート情報を削除する
-    # 将来的には別メソッドにしよう
-    old_concert = ConcertInfo.all.select { |x| x.tactdown_time < Time.now.beginning_of_month }
+    puts 'スクレイピングが終了しました'
 
     begin
-      ConcertInfo.transaction do
-        # old_concert.each(&:destroy!)
-        ConcertInfo.import(concert_infos)
-      end
+      ConcertInfo.import(concert_infos)
     rescue => e
       log_error('コンサート情報の更新に失敗しました', e)
     end
@@ -47,10 +53,10 @@ class Scraping # 将来的には非同期でうごかせるようにする
 
   def new_urls(session)
     session    = capybara_init
-    all_urls   = concert_info_urls(session)
-    all_urls   = all_urls[0..10] # 実装中に大量スクレイピングしないように仮実装
-    exist_urls = ConcertInfo.pluck(:page_url)
-    new_urls   = all_urls.select { |url| exist_urls.exclude?(url) }
+    # all_urls   = Set.new(concert_info_urls(session))
+    all_urls   = Set.new(concert_info_urls(session)[0...10]) # 実装中に大量スクレイピングしないように仮実装
+    exist_urls = Set.new(ConcertInfo.pluck(:page_url))
+    new_urls   = all_urls - exist_urls
     new_urls
   end
 
@@ -65,7 +71,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
   def concert_info_urls(session)
     concert_info_urls = []
     urls = ["http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}"]
-    # "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
+            # "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
 
     urls.each do |url|
       page = html_parth(url, session)
@@ -77,6 +83,21 @@ class Scraping # 将来的には非同期でうごかせるようにする
     concert_info_urls
   end
 
+  def pro_performer?(page)
+    src_name = page.search('.colRight/img').first.attributes['src'].value
+
+    # ico_okeGAKUDAN001.gif = プロオケ
+    # ico_okeGAKUDAN002.gif = プロアンサンブル
+    # ico_okeGAKUDAN003.gif = プロス吹奏
+    # ico_okeGAKUDAN004.gif = プロビックバンド
+    # ico_okeGAKUDAN005.gif = プロ独奏
+    # ico_okeGAKUDAN006.gif = プロ声楽
+    # ico_okeGAKUDAN007.gif = プロ合唱
+    # ico_okeGAKUDAN008.gif = プロオペラ
+    # ico_okeGAKUDAN009.gif = プロ舞台
+    src_name.match(/001|002|003|004|005|006|007|008|009/)
+  end
+
   def parth_concert_info(page, url)
     {
       concert:         page.search('.concertName').text,
@@ -84,9 +105,9 @@ class Scraping # 将来的には非同期でうごかせるようにする
       hall:            hall_parse(page.search('.placeinfo').text),
       hall_prefecture: hall_prefecture_parse(page.search('.placeinfo').text),
       hall_ward:       hall_ward_parse(page.search('.placeinfo').text),
-      opening_time:   tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      tactdown_time:    opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
-      music_titles:    exclusion_escape_character(page.search('p.composer').text).chomp.gsub(/(\r\n|\r|\n)/, '<br>'),
+      opening_time:    tactdown_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      tactdown_time:   opening_time_parse(exclusion_escape_character(page.search('.concertDate').text)),
+      music_titles:    exclusion_escape_character(page.search('p.composer').text).chomp,
       performer_url:   slice_text(page, 'URL：', '直接お問合せする際は'),
       page_url:        url
     }

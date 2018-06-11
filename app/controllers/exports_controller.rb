@@ -1,14 +1,18 @@
 class ExportsController < ApplicationController
   def show
-    @concert_infos = ConcertInfo.where(id: params[:concert_info_ids].to_a).order('tactdown_time ASC')
+    @concert_infos = ConcertInfo.unexpired.where(id: params[:concert_info_ids].to_a).order('tactdown_time ASC')
 
     respond_to do |format|
+      format.csv do
+        send_data(Export.new.export_csv(@concert_infos), type: 'csv', filename: '挟み込みリスト.csv')
+      end
+
       format.xlsx do
-        response.headers['Content-Disposition'] = 'attachment; filename="挟み込みリスト.xlsx"'
+        response.headers['Content-Disposition'] = 'attachment; filename="挟み込みリスト(印刷用).xlsx"'
       end
 
       format.text do
-        send_data(Export.export_text(@concert_infos), type: 'text', filename: 'test.txt')
+        send_data(Export.new.export_text(@concert_infos), type: 'text', filename: '挟み込みリスト(メール用文章).txt')
       end
     end
   end
