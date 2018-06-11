@@ -48,7 +48,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'seed-fu'
   gem 'spring-commands-rspec'
-  gem 'xray-rails'
 end
 
 group :development do
