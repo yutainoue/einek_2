@@ -66,4 +66,8 @@ group :test do
   gem 'shoulda-matchers'
 end
 
+group :production do
+  gem 'pg', '1.0.0'
+end
+
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
