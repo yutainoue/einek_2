@@ -1,5 +1,13 @@
 module ConcertInfoDecorator
   def title
+    if performer.blank?
+      return "#{concert}"
+    end
+
+    if concert.blank?
+      return "#{performer}"
+    end
+
     "【#{performer}】\n#{concert}"
   end
 
