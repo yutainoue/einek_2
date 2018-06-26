@@ -217,7 +217,7 @@ class HallMaster < ActiveHash::Base
     { id: 215, prefecture_id: 13, search_name: 'シビック', name: '文京シビックホール' },
     { id: 216, prefecture_id: 13, search_name: '町田市民,町田市市民', name: '町田市民ホール' },
     { id: 217, prefecture_id: 13, search_name: '松本記念', name: '松本記念音楽迎賓館' },
-    { id: 218, prefecture_id: 13, search_name: 'まろにえホール,東久留米市立生涯,東久留米市生涯,,東久留米生涯', name: 'まろにえホール 東久留米市立生涯学習センター' },
+    { id: 218, prefecture_id: 13, search_name: 'まろにえホール,東久留米市立生涯,東久留米市生涯,東久留米生涯', name: 'まろにえホール 東久留米市立生涯学習センター' },
     { id: 219, prefecture_id: 13, search_name: '三鷹市芸術,三鷹芸術', name: '三鷹市芸術文化センター' },
     { id: 220, prefecture_id: 13, search_name: '三鷹市公会堂,三鷹公会堂', name: '三鷹市公会堂' },
     { id: 221, prefecture_id: 13, search_name: 'メイズ,ＭＡＹＳ,MAYS,Mays,mays', name: 'ミュージックスタジオメイズ (music studio MAYS)' },
