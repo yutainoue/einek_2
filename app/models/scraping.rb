@@ -54,7 +54,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
   def new_urls(session)
     session    = capybara_init
     # all_urls   = Set.new(concert_info_urls(session))
-    all_urls   = Set.new(concert_info_urls(session)[0...10]) # 実装中に大量スクレイピングしないように仮実装
+    all_urls   = Set.new(concert_info_urls(session)[0...40]) # 実装中に大量スクレイピングしないように仮実装
     exist_urls = Set.new(ConcertInfo.pluck(:page_url))
     new_urls   = all_urls - exist_urls
     new_urls
@@ -70,8 +70,8 @@ class Scraping # 将来的には非同期でうごかせるようにする
 
   def concert_info_urls(session)
     concert_info_urls = []
-    urls = ["http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}"]
-            # "http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
+    # urls = ["http://okesen.snacle.jp/concertlist/three-month/from/#{Date.today.strftime('%Y-%m')}"]
+    urls = ["http://okesen.snacle.jp/concertlist/three-month/from/#{(Date.today + 3.months).strftime('%Y-%m')}"]
 
     urls.each do |url|
       page = html_parth(url, session)
@@ -151,7 +151,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
 
   def hall_prefecture_parse(text)
     return if text.blank?
-    text = text[/（(.*?)）/, 1].gsub(/ |　|/, '')
+    text = text.scan(/（.*?）/).last.gsub(/（|）|/, '')
     end_point = text.index(/都|道|府|県/)
 
     end_point = 2 if text.include?('京都府')
@@ -160,7 +160,7 @@ class Scraping # 将来的には非同期でうごかせるようにする
 
   def hall_ward_parse(text)
     return if text.blank?
-    text = text[/（(.*?)）/, 1].gsub(/ |　|/, '')
+    text = text.scan(/（.*?）/).last.gsub(/（|）|/, '')
     start_point = text.index(/都|道|府|県/) + 1
     end_point = text.length
 
